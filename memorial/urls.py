@@ -9,7 +9,7 @@ from .views import (
     update_banner,
     update_quote,
     update_biography,
-    
+
 )
 
 
@@ -75,5 +75,17 @@ urlpatterns = [
         '<int:pk>/upload-audio/',
         views.upload_audio,
         name='upload_audio',
+    ),
+
+    # Gallery Management
+    path(
+        'memorials/<int:pk>/upload-gallery/',
+        views.upload_gallery_images,
+        name='upload_gallery_images',
+    ),
+    path(
+        '<int:memorial_id>/gallery/<int:image_id>/delete/',
+        views.delete_gallery_image,
+        name='delete_gallery_image',
     ),
 ]
