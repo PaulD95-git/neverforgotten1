@@ -38,6 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party
+    'cloudinary',
+    'cloudinary_storage',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'whitenoise.runserver_nostatic',
+
     # Local apps
     'memorial',
 ]
