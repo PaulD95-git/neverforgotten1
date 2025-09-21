@@ -1312,4 +1312,171 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize elements
+  const form = document.getElementById('galleryUploadForm');
+  const uploadSubmitBtn = document.getElementById('uploadSubmitBtn');
+  const fileInput = form?.querySelector('input[type="file"]');
+  
+  // Form submission handler
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validate files
+      if (fileInput.files.length === 0) {
+        showToast('Please select at least one image', 'error');
+        return;
+      }
+      
+      // Show loading state
+      const btnText = uploadSubmitBtn.querySelector('.btn-text');
+      const spinner = uploadSubmitBtn.querySelector('.spinner-border');
+      const progressBar = document.querySelector('.progress-bar');
+      
+      uploadSubmitBtn.disabled = true;
+      btnText.textContent = 'Uploading...';
+      spinner.classList.remove('d-none');
+      document.getElementById('uploadProgress').classList.remove('d-none');
+      
+      try {
+        const formData = new FormData(form);
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfToken
+          }
+        });
+        
+        // Check response type
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned unexpected response');
+        }
+        
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Upload failed');
+        }
+        
+        // Update gallery display
+        if (data.new_images && data.new_images.length > 0) {
+          updateGalleryDisplay(data.new_images);
+        }
+        
+        showToast(data.message || 'Upload successful', 'success');
+        
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadGalleryModal'));
+        if (modal) modal.hide();
+        
+        // Reset form
+        form.reset();
+        
+      } catch (error) {
+        console.error('Upload error:', error);
+        showToast(error.message || 'An error occurred during upload', 'error');
+      } finally {
+        // Reset button state
+        uploadSubmitBtn.disabled = false;
+        btnText.textContent = 'Upload';
+        spinner.classList.add('d-none');
+        document.getElementById('uploadProgress').classList.add('d-none');
+      }
+    });
+  }
+
+  // Update gallery display with new images
+  function updateGalleryDisplay(newImages) {
+    const visibleGallery = document.getElementById('visible-gallery');
+    const hiddenGallery = document.getElementById('hidden-gallery');
+    const toggleBtn = document.getElementById('toggle-gallery-btn');
+    const emptyMessage = visibleGallery.querySelector('p.text-muted');
+    
+    // Remove empty message if exists
+    if (emptyMessage) emptyMessage.remove();
+    
+    // Add new images
+    newImages.forEach((image, index) => {
+      const totalImages = visibleGallery.children.length + (hiddenGallery.children.length || 0);
+      const galleryItem = createGalleryItem(image, totalImages);
+      
+      if (visibleGallery.children.length < 3) {
+        visibleGallery.appendChild(galleryItem);
+      } else {
+        hiddenGallery.classList.remove('d-none');
+        hiddenGallery.appendChild(galleryItem);
+      }
+    });
+    
+    // Show toggle button if needed
+    if (hiddenGallery.children.length > 0 && toggleBtn) {
+      toggleBtn.classList.remove('d-none');
+    }
+  }
+  
+  // Create gallery item DOM element
+  function createGalleryItem(image, slideIndex) {
+    const colDiv = document.createElement('div');
+    colDiv.className = 'col-12 col-md-4';
+    
+    colDiv.innerHTML = `
+      <div class="gallery-item position-relative rounded overflow-hidden shadow-sm">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" 
+           data-bs-slide-to="${slideIndex}">
+          <img src="${image.url}" 
+               alt="${image.caption || 'Gallery Image'}" 
+               class="img-fluid gallery-img" loading="lazy">
+        </a>
+        ${image.caption ? `
+        <div class="gallery-caption px-2 py-1 bg-dark bg-opacity-50 
+                    text-white position-absolute bottom-0 w-100 text-truncate">
+          ${image.caption}
+        </div>` : ''}
+        {% if user == memorial.user %}
+        <form method="POST" 
+              action="{% url 'memorials:delete_gallery_image' memorial.id '0' %}" 
+              class="position-absolute top-0 end-0 m-2 delete-gallery-form">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-danger" 
+                  onclick="return confirm('Delete this photo?');" 
+                  title="Delete photo">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    `;
+    
+    // Update delete form action
+    const deleteForm = colDiv.querySelector('.delete-gallery-form');
+    if (deleteForm) {
+      deleteForm.action = deleteForm.action.replace('/0', `/${image.id}`);
+    }
+    
+    return colDiv;
+  }
+  
+  // Show toast notification
+  function showToast(message, type = 'success') {
+    const toastEl = document.getElementById('toastNotification');
+    if (!toastEl) return;
+    
+    const toast = new bootstrap.Toast(toastEl);
+    const toastBody = toastEl.querySelector('.toast-body');
+    const toastHeader = toastEl.querySelector('.toast-header');
+    
+    toastBody.textContent = message;
+    toastHeader.className = `toast-header bg-${type === 'error' ? 'danger' : 'success'} text-white`;
+    
+    toast.show();
+  }
+});
+</script>
 {% endblock %}
