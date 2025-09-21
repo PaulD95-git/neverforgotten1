@@ -54,3 +54,34 @@ class GalleryImageForm(forms.ModelForm):
     class Meta:
         model = GalleryImage
         fields = ['image', 'caption']
+
+# --- Story Form ---
+class StoryForm(forms.ModelForm):
+    """Form for sharing longer memorial stories."""
+    class Meta:
+        model = Story
+        fields = ['author_name', 'title', 'content']
+        widgets = {
+            'author_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your Name'
+            }),
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Story Title'
+            }),
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': 'Share your story...'
+            }),
+        }
+        labels = {
+            'author_name': 'Your Name',
+            'title': 'Story Title',
+            'content': 'Your Story',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs.update({'minlength': '50'})
