@@ -46,3 +46,11 @@ class TributeForm(forms.ModelForm):
             'author_name': 'Your Name',
             'message': 'Tribute Message',
         }
+
+
+# --- Gallery Image Form ---
+class GalleryImageForm(forms.ModelForm):
+    """Form for uploading memorial gallery images."""
+    class Meta:
+        model = GalleryImage
+        fields = ['image', 'caption']
