@@ -592,3 +592,115 @@ body {
   color: #3e2f1c;
   margin-bottom: 0.5rem;
 }
+
+/* ===================== */
+/* === MUSIC STYLES === */
+/* ===================== */
+.music-section {
+  background-color: #fffaf3;
+  border: 1px solid #d97b37;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  width: 90vw;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px 40px;
+  border-radius: 10px;
+}
+
+.music-section .music-title {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #d97b37;
+}
+
+.music-section audio {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(217, 123, 55, 0.3);
+  background-color: #fff8e1;
+  border: 1.5px solid #d97b37;
+  outline: none;
+  transition: border-color 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.music-section audio:focus {
+  border-color: #b86528;
+  box-shadow: 0 0 8px rgba(184, 101, 40, 0.5);
+}
+
+.music-section p.text-muted {
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.music-section .btn-outline-secondary {
+  border-color: #d97b37;
+  color: #d97b37;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  transition: background-color 0.3s, color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.music-section .btn-outline-secondary:hover,
+.music-section .btn-outline-secondary:focus {
+  background-color: #d97b37;
+  color: #fff;
+  border-color: #b86528;
+  box-shadow: 0 0 8px rgba(184, 101, 40, 0.5);
+}
+
+.music-section .btn-outline-secondary i {
+  font-size: 1.2rem;
+}
+
+.music-section .locked-overlay {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(217, 123, 55, 0.4);
+}
+
+.music-section .unlock-premium-btn {
+  display: inline-flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0.6rem 1.8rem;
+  font-weight: 700;
+  font-size: 1rem;
+  background-color: #d97b37;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(217, 123, 55, 0.5);
+  transition: background-color 0.3s ease;
+  max-width: 300px;
+}
+
+.music-section .unlock-premium-btn:hover,
+.music-section .unlock-premium-btn:focus {
+  background-color: #b86528;
+  text-decoration: none;
+  outline: none;
+}
