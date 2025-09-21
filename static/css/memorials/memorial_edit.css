@@ -214,6 +214,27 @@ body {
 .upload-icon:hover {
   box-shadow: 0 0 10px rgba(217, 123, 55, 0.7);
   transition: box-shadow 0.3s ease;
+}
+
+/* ==================== */
+/* === MODAL STYLES === */
+/* ==================== */
+#profilePictureModal .modal-dialog {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+#profilePictureModal .modal-content {
+  background: transparent;
+  box-shadow: none;
+}
+
+#profilePictureModal img {
+  max-height: 80vh;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
 
 /* ================== */
 /* === MODAL FORM === */
@@ -781,4 +802,3 @@ body {
   text-decoration: none;
   outline: none;
 }
-
