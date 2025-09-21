@@ -2,27 +2,34 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 from . import views
 from .views import (
-    MemorialCreateView,
-    memorial_detail,
-    update_name,
-    update_dates,
-    update_banner,
-    update_quote,
-    update_biography,
-
+    index, MemorialCreateView, MemorialEditView, MyAccountView, update_name,
+    update_dates, update_banner, update_quote, memorial_detail, edit_tribute,
+    delete_tribute, create_tribute, get_tributes, create_story, edit_story,
+    delete_story, get_stories, UpgradeMemorialView, update_biography, plans,
 )
 
 
 app_name = 'memorials'
 
-
 urlpatterns = [
+
+
 
     # Memorial CRUD Operations
     path(
         'memorials/create/',
         MemorialCreateView.as_view(),
         name='memorial_create',
+    ),
+    path(
+        'memorials/<int:pk>/edit/',
+        MemorialEditView.as_view(),
+        name='memorial_edit',
+    ),
+    path(
+        '<int:pk>/delete/',
+        views.delete_memorial,
+        name='memorial_delete',
     ),
     path(
         'memorials/<int:pk>/',
@@ -37,6 +44,7 @@ urlpatterns = [
         LogoutView.as_view(next_page='home'),
         name='logout',
     ),
+
 
     # Memorial Media Updates
     path(
@@ -88,4 +96,51 @@ urlpatterns = [
         views.delete_gallery_image,
         name='delete_gallery_image',
     ),
+
+    # Tribute URLs
+    path(
+        'memorials/<int:pk>/tributes/create/',
+        create_tribute,
+        name='create_tribute',
+    ),
+    path(
+        'memorials/tributes/<int:pk>/edit/',
+        edit_tribute,
+        name='edit_tribute',
+    ),
+    path(
+        'memorials/tributes/<int:pk>/delete/',
+        delete_tribute,
+        name='delete_tribute',
+    ),
+    path(
+        'memorials/<int:pk>/tributes/',
+        get_tributes,
+        name='get_tributes',
+    ),
+
+    # Story URLs
+    path(
+        'memorials/<int:pk>/stories/create/',
+        create_story,
+        name='create_story',
+    ),
+    path(
+        'memorials/stories/<int:pk>/edit/',
+        edit_story,
+        name='edit_story',
+    ),
+    path(
+        'memorials/stories/<int:pk>/delete/',
+        delete_story,
+        name='delete_story',
+    ),
+    path(
+        'memorials/<int:pk>/stories/',
+        get_stories,
+        name='get_stories',
+    ),
+
+
+
 ]
