@@ -155,3 +155,25 @@ class Memorial(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class Tribute(models.Model):
+    """
+    Model for memorial tributes/messages.
+    Allows users to leave messages for the memorialized individual.
+    """
+    memorial = models.ForeignKey(
+        Memorial, related_name='tributes', on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    author_name = models.CharField(max_length=100)
+    message = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Tribute by {self.author_name} for {self.memorial}"
