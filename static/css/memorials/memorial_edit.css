@@ -226,3 +226,37 @@ body {
   color: #b86528;
   font-weight: 600;
 }
+
+/* ==================== */
+/* === BUTTON STYLES === */
+/* ==================== */
+.share-button,
+.view-btn,
+.post-tribute-btn {
+  width: 80%;
+  max-width: 600px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-family: 'Lora', serif;
+  background-color: #d97b37;
+  color: #fffaf3;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.share-button:hover,
+.view-btn:hover,
+.post-tribute-btn:hover {
+  background-color: #b86528;
+  color: #fffaf3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-tribute-btn:focus {
+  background-color: #b86528;
+  box-shadow: 0 4px 12px rgba(217, 123, 55, 0.6);
+  outline: none;
+}
