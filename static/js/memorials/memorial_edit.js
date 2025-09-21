@@ -239,3 +239,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// BIOGRAPHY
+
+document.getElementById('biography-edit-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            document.getElementById('editable-biography').innerHTML = 
+                data.biography + '<small class="text-muted d-block mt-2"><i class="fas fa-edit"></i> Edit biography</small>';
+            // Close modal or show success message
+            return bootstrap.Modal.getInstance(document.getElementById('biographyEditModal')).hide();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to save biography. Please try again.');
+    });
+});

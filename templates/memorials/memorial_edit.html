@@ -229,6 +229,66 @@
     </div>
   </div>
 
+  <!-- Biography Section -->
+  <div class="biography-container container text-center mt-4">
+    <h2 class="biography-title">Remembering {{ memorial.first_name }}</h2>
+    <div id="editable-biography" class="editable-field mt-3" 
+         data-bs-toggle="modal" data-bs-target="#biographyEditModal" 
+         style="cursor:pointer;">
+      {% if memorial.biography %}
+        {{ memorial.biography|linebreaksbr }}
+      {% else %}
+        <p class="text-muted">
+          <em>Click here to share {{ memorial.first_name }}'s life story - their birth, 
+          family, accomplishments, personality, and what they meant to you. This will 
+          be displayed at the top of the memorial.</em>
+        </p>
+      {% endif %}
+      <small class="text-muted d-block mt-2">
+        <i class="fas fa-edit"></i> Edit biography
+      </small>
+    </div>
+  </div>
+
+  <!-- Biography Edit Modal -->
+  <div class="modal fade" id="biographyEditModal" tabindex="-1" 
+       aria-labelledby="biographyEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form id="biography-edit-form" method="POST" 
+              action="{% url 'memorials:update_biography' memorial.pk %}">
+          {% csrf_token %}
+          <div class="modal-header bg-light">
+            <h5 class="modal-title" id="biographyEditModalLabel">Edit Biography</h5>
+            <button type="button" class="btn-close" 
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <textarea name="biography" rows="8" class="form-control" 
+                      placeholder="Share {{ memorial.first_name }}'s life story here... 
+                      
+• When and where they were born
+• Their family relationships
+• Education and career
+• Hobbies and passions
+• Special memories or qualities
+• What they meant to their loved ones">
+              {{ memorial.biography }}
+            </textarea>
+            <div class="form-text mt-2">
+              This biography will appear at the top of the memorial page.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" 
+                    data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Biography</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 
 
 {% endblock %}
