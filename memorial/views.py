@@ -274,3 +274,23 @@ def update_banner(request, pk):
             'status': 'error',
             'message': str(e)
         }, status=500)
+
+
+@require_POST
+@login_required
+def update_biography(request, pk):
+    """AJAX endpoint for updating memorial biography"""
+    try:
+        memorial = get_object_or_404(Memorial, pk=pk, user=request.user)
+        biography = request.POST.get('biography', '')
+        memorial.biography = biography
+        memorial.save()
+        return JsonResponse({
+            'success': True,
+            'biography': biography.replace('\n', '<br>')
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
