@@ -23,3 +23,26 @@ class MemorialForm(forms.ModelForm):
                 attrs={'type': 'date', 'class': 'form-control'}
             ),
         }
+
+
+# --- Tribute Form ---
+class TributeForm(forms.ModelForm):
+    """Form for submitting tributes/memories."""
+    class Meta:
+        model = Tribute
+        fields = ['author_name', 'message']
+        widgets = {
+            'author_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your Name'
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Write your tribute...'
+            }),
+        }
+        labels = {
+            'author_name': 'Your Name',
+            'message': 'Tribute Message',
+        }
