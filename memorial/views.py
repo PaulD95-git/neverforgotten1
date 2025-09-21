@@ -10,6 +10,9 @@ from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse
 
 
 # Local Apps
@@ -73,3 +76,126 @@ class MemorialEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             kwargs={'pk': self.object.pk}
         )
         return context
+
+
+# ---------------------------
+# Memorial Content Views
+# ---------------------------
+
+@csrf_protect
+def memorial_detail(request, pk):
+    """Detailed view of a memorial with tributes and stories"""
+    memorial = get_object_or_404(Memorial, pk=pk)
+    memorial.refresh_from_db()
+
+    tributes = memorial.tributes.all().order_by('-created_at')[:6]
+    stories = memorial.stories.all().order_by('-created_at')[:3]
+
+    plan_name = memorial.plan.name.lower() if memorial.plan else ""
+    is_premium_plan = plan_name in ['premium', 'lifetime']
+    is_premium = (
+        request.user.is_authenticated and
+        request.user == memorial.user and
+        is_premium_plan
+    )
+
+    if (request.method == 'POST' and
+            request.headers.get('x-requested-with') == 'XMLHttpRequest'):
+        if 'story_content' in request.POST:
+            return create_story(request, pk)
+        return create_tribute(request, pk)
+
+    return render(
+        request,
+        'memorials/memorial_detail.html',
+        {
+            'memorial': memorial,
+            'tributes': tributes,
+            'stories': stories,
+            'is_premium': is_premium,
+            'request': request,
+        }
+    )
+
+
+# ---------------------------
+# AJAX Update Views
+# ---------------------------
+
+@require_POST
+def update_name(request, pk):
+    """AJAX endpoint for updating memorial name"""
+    try:
+        memorial = Memorial.objects.get(pk=pk)
+        memorial.first_name = request.POST.get('first_name', '')
+        memorial.middle_name = request.POST.get('middle_name', '')
+        memorial.last_name = request.POST.get('last_name', '')
+        memorial.save()
+
+        full_name = (
+            f"{memorial.first_name} "
+            f"{memorial.middle_name + ' ' if memorial.middle_name else ''}"
+            f"{memorial.last_name}"
+        )
+
+        return JsonResponse({
+            'status': 'success',
+            'new_name': full_name.strip()
+        })
+    except Memorial.DoesNotExist:
+        return JsonResponse(
+            {'status': 'error', 'message': 'Memorial not found'},
+            status=404
+        )
+    except Exception as e:
+        return JsonResponse(
+            {'status': 'error', 'message': str(e)},
+            status=400
+        )
+
+
+@require_POST
+def update_dates(request, pk):
+    """AJAX endpoint for updating memorial dates"""
+    try:
+        memorial = Memorial.objects.get(pk=pk)
+
+        date_of_birth_str = request.POST.get('date_of_birth')
+        date_of_death_str = request.POST.get('date_of_death')
+
+        try:
+            date_of_birth = datetime.strptime(
+                date_of_birth_str,
+                '%Y-%m-%d'
+            ).date()
+            date_of_death = datetime.strptime(
+                date_of_death_str,
+                '%Y-%m-%d'
+            ).date()
+        except (ValueError, TypeError):
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid date format. Use YYYY-MM-DD.'
+            }, status=400)
+
+        memorial.date_of_birth = date_of_birth
+        memorial.date_of_death = date_of_death
+        memorial.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'new_dates': (
+                f"{date_of_birth.strftime('%B %d, %Y')} - "
+                f"{date_of_death.strftime('%B %d, %Y')}"
+            )
+        })
+    except Memorial.DoesNotExist:
+        return JsonResponse(
+            {'status': 'error', 'message': 'Memorial not found'},
+            status=404
+        )
+    except Exception as e:
+        return JsonResponse(
+            {'status': 'error', 'message': str(e)},
+            status=400
+        )
