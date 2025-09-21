@@ -1,5 +1,5 @@
 from django import forms
-from .models import Memorial
+from .models import Memorial, Tribute
 
 
 # --- Memorial Form ---
