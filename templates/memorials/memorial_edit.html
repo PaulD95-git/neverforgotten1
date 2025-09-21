@@ -187,6 +187,48 @@
     </div>
   {% endif %}
 
+  <!-- Editable Quote Section -->
+  <div class="quote-container container text-center mt-3">
+    <p id="editable-quote" class="editable-field" 
+       data-bs-toggle="modal" data-bs-target="#quoteEditModal">
+      {% if memorial.quote %}
+        {{ memorial.quote }}
+      {% else %}
+        In Loving Memory of {{ memorial.first_name }}
+      {% endif %}
+      <i class="fas fa-edit ms-2" style="font-size: 0.8em; opacity: 0.6;"></i>
+    </p>
+  </div>
+
+  <!-- Quote Edit Modal -->
+  <div class="modal fade" id="quoteEditModal" tabindex="-1" 
+       aria-labelledby="quoteEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="quote-edit-form" method="POST" 
+              action="{% url 'memorials:memorial_edit' memorial.pk %}">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="quoteEditModalLabel">Edit Quote</h5>
+            <button type="button" class="btn-close" 
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <textarea name="quote" rows="3" class="form-control" 
+                      placeholder='"In Loving Memory of {{ memorial.first_name }}"'>
+              {{ memorial.quote }}
+            </textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" 
+                    data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 
 
 {% endblock %}
@@ -396,6 +438,49 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(() => alert("Link copied to clipboard!"))
         .catch(() => alert("Couldn't copy the link. Please try manually."));
     }
+  });
+</script>
+<script>
+  // Submit Quote via AJAX
+  document.getElementById("quote-edit-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch(`/memorials/${memorialId}/update-quote/`, {
+      method: "POST",
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        // Update quote display
+        const quoteField = document.getElementById("editable-quote");
+        quoteField.innerHTML = `
+          ${data.quote ? data.quote : 'In "Loving Memory of {{ memorial.first_name }}"'}
+          <i class="fas fa-edit ms-2" style="font-size: 0.6em; opacity: 0.7;"></i>
+        `;
+
+        // Close the modal and clean up
+        const quoteModal = bootstrap.Modal.getInstance(document.getElementById('quoteEditModal'));
+        if (quoteModal) {
+          quoteModal.hide();
+          quoteModal._element.addEventListener('hidden.bs.modal', removeModalBackdrop);
+        } else {
+          removeModalBackdrop();
+        }
+      } else {
+        alert("Failed to update quote.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      removeModalBackdrop();
+    });
   });
 </script>
 {% endblock %}

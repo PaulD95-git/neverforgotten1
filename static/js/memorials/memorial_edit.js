@@ -180,3 +180,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+// QUOTE SECTION
+document.addEventListener('DOMContentLoaded', function() {
+    const quoteForm = document.getElementById('quote-edit-form');
+    
+    if (quoteForm) {
+        quoteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get memorial ID from the form action URL
+            const memorialId = quoteForm.action.split('/').filter(part => part).slice(-2, -1)[0];
+            
+            // Prepare the data
+            const formData = new FormData(quoteForm);
+            const quoteText = formData.get('quote').trim();
+            
+            fetch(`/memorials/${memorialId}/update-quote/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    quote: quoteText
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Failed to update quote');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update the displayed quote
+                    const quoteElement = document.getElementById('editable-quote');
+                    quoteElement.innerHTML = data.quote || 
+                        `In Loving Memory of ${document.getElementById('editable-name').textContent.trim().split(' ')[0]}`;
+                    quoteElement.innerHTML += '<i class="fas fa-edit ms-2" style="font-size: 0.8em; opacity: 0.6;"></i>';
+                    
+                    // Close the modal
+                    bootstrap.Modal.getInstance(document.getElementById('quoteEditModal')).hide();
+                    
+
+                } else {
+                    throw new Error(data.message || 'Failed to update quote');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating quote: ' + (error.message || 'Please try again'));
+            });
+        });
+    }
+});
