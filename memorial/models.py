@@ -177,3 +177,43 @@ class Tribute(models.Model):
 
     def __str__(self):
         return f"Tribute by {self.author_name} for {self.memorial}"
+
+
+class GalleryImage(models.Model):
+    """
+    Model for memorial gallery images.
+    Stores images associated with a memorial with optional captions.
+    """
+    memorial = models.ForeignKey(
+        Memorial, on_delete=models.CASCADE, related_name='gallery'
+    )
+    image = CloudinaryField('image')
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Image for {self.memorial}"
+
+
+class Story(models.Model):
+    """
+    Model for longer memorial stories.
+    Allows for more detailed narratives about the memorialized individual.
+    """
+    memorial = models.ForeignKey(
+        Memorial, related_name='stories', on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    author_name = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name_plural = "Stories"
+
+    def __str__(self):
+        return f"Story: {self.title} by {self.author_name}"
