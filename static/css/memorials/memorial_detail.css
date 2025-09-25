@@ -182,3 +182,126 @@ body {
 .profile-pic-wrapper:hover {
   transform: translateX(-50%) scale(1.03);
 }
+
+/* ==================== */
+/* === BUTTON STYLES === */
+/* ==================== */
+.share-button,
+.view-btn,
+.post-tribute-btn {
+  width: 80%;
+  max-width: 600px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-family: 'Lora', serif;
+  background-color: #d97b37;
+  color: #fffaf3;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.share-button:hover,
+.view-btn:hover,
+.post-tribute-btn:hover {
+  background-color: #b86528;
+  color: #fffaf3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-tribute-btn:focus {
+  background-color: #b86528;
+  box-shadow: 0 4px 12px rgba(217, 123, 55, 0.6);
+  outline: none;
+}
+
+/* ================== */
+/* === MODAL FORM === */
+/* ================== */
+.modal-content {
+  background-color: #fffaf3;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(217, 123, 55, 0.3);
+  font-family: 'Lora', serif;
+  color: #3e2f1c;
+  padding: 1.5rem;
+}
+
+.modal-header {
+  border-bottom: 1px solid #d97b37;
+  padding-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3e2f1c;
+}
+
+.modal-body label {
+  font-weight: 600;
+  color: #6c584c;
+}
+
+.modal-body input.form-control,
+.modal-body textarea.form-control {
+  border-radius: 8px;
+  border: 1.5px solid #d97b37;
+  background-color: #fff8e1;
+  color: #3e2f1c;
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.modal-body input.form-control:focus,
+.modal-body textarea.form-control:focus {
+  border-color: #b86528;
+  box-shadow: 0 0 8px rgba(184, 101, 40, 0.5);
+}
+
+.modal-footer {
+  border-top: 1px solid #d97b37;
+  padding-top: 1rem;
+}
+
+.modal-footer .btn-primary {
+  background-color: #d97b37;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(217, 123, 55, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #b86528;
+  box-shadow: 0 4px 10px rgba(184, 101, 40, 0.7);
+}
+
+.modal-footer .btn-secondary {
+  background-color: transparent;
+  border: none;
+  color: #6c584c;
+  font-family: 'Lora', serif;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.modal-footer .btn-secondary:hover {
+  color: #3e2f1c;
+  text-decoration: underline;
+}
+
+.invalid-feedback {
+  font-family: 'Lora', serif;
+  color: #b86528;
+  font-weight: 600;
+}
