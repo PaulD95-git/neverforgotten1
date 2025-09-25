@@ -174,3 +174,31 @@ def stripe_webhook(request):
             print(f"⚠️ Error handling subscription cancellation cleanup: {e}")
 
     return HttpResponse(status=200)
+
+
+@login_required
+def cancel_plan(request, memorial_id):
+    """Cancel current plan and revert to free plan."""
+    memorial = get_object_or_404(
+        Memorial, pk=memorial_id, user=request.user
+    )
+    free_plan = Plan.objects.filter(name__iexact='free').first()
+
+    if request.method == 'POST':
+        if memorial.stripe_subscription_id:
+            try:
+                stripe.Subscription.delete(
+                    memorial.stripe_subscription_id
+                )
+            except Exception as e:
+                print("Stripe cancel subscription error:", e)
+
+        memorial.plan = free_plan
+        memorial.stripe_subscription_id = None
+        memorial.banner_type = 'color'
+        memorial.banner_value = '#f7e8c9'
+        memorial.save()
+
+        return redirect('memorials:account_profile')
+
+    return redirect('memorials:account_profile')
