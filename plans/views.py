@@ -202,3 +202,43 @@ def cancel_plan(request, memorial_id):
         return redirect('memorials:account_profile')
 
     return redirect('memorials:account_profile')
+
+
+@login_required
+def payment_success(request):
+    """Render success page after successful payment."""
+    memorial_id = (
+        request.GET.get('memorial_id') or
+        request.session.get('memorial_id') or
+        (
+            request.GET.get('session_id') and
+            stripe.checkout.Session.retrieve(
+                request.GET['session_id']
+            ).metadata.get('memorial_id')
+        )
+    )
+
+    if not memorial_id:
+        logger.error("No memorial_id found in request")
+        return render(request, 'plans/success.html', {
+            'error': 'No memorial information found. Please contact support.'
+        })
+
+    try:
+        memorial = Memorial.objects.get(pk=memorial_id)
+        return render(request, 'plans/success.html', {
+            'memorial': memorial,
+            'memorial_id': memorial_id
+        })
+    except Memorial.DoesNotExist:
+        logger.error(f"Memorial not found with ID: {memorial_id}")
+        return render(request, 'plans/success.html', {
+            'error': 'Memorial not found',
+            'memorial_id': memorial_id
+        })
+
+
+@login_required
+def payment_cancel(request):
+    """Render cancellation page."""
+    return render(request, 'plans/cancel.html')
