@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# ======================== TITLE BLOCK ======================== #}
+{% block title %}{{ memorial.first_name }} {{ memorial.last_name }} - Memorial{% endblock %}
+
+{# ======================== MAIN CONTENT BLOCK ======================== #}
+{% block content %}
+  {# ------------------------ Custom CSS ------------------------ #}
+<link rel="stylesheet" href="{% static 'css/memorials/memorial_detail.css' %}">
+
+  {# ------------------------ Flash Messages ------------------------ #}
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" 
+             role="alert">
+          {{ message }}
+          <button type="button" 
+                  class="btn-close" 
+                  data-bs-dismiss="alert" 
+                  aria-label="Close">
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {# ------------------------ Memorial Banner ------------------------ #}
+  {% if memorial.banner_type == 'image' and memorial.banner_value %}
+    <div id="memorialBanner" 
+         class="banner banner-image"
+         data-memorial-id="{{ memorial.pk }}"
+         style="background-image: url('{% static memorial.banner_value %}');">
+  {% elif memorial.banner_type == 'color' and memorial.banner_value %}
+    <div id="memorialBanner" 
+         class="banner banner-color"
+         data-memorial-id="{{ memorial.pk }}"
+         style="background-color: {{ memorial.banner_value }};">
+  {% else %}
+    <div id="memorialBanner" 
+         class="banner banner-default"
+         data-memorial-id="{{ memorial.pk }}">
+  {% endif %}
+    </div>
+
+
+{% endblock %}
+
+
