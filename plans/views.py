@@ -71,3 +71,11 @@ def create_checkout_session(request, plan_id, memorial_id):
         return redirect(checkout_session.url)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def get_public_id_from_url(url):
+    """Extract public ID from Cloudinary URL."""
+    parsed = urlparse(url)
+    path = parsed.path
+    match = re.search(r'/upload/(?:v\d+/)?(?P<public_id>.+)', path)
+    return match.group('public_id') if match else None
