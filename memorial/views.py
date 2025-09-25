@@ -20,6 +20,19 @@ from .forms import MemorialForm
 from .models import Memorial
 
 # ---------------------------
+# Basic Views
+# ---------------------------
+
+
+def index(request):
+    """Homepage view showing recent memorials"""
+    recent_memorials = Memorial.objects.all().order_by('-created_at')[:6]
+    context = {
+        'recent_memorials': recent_memorials,
+    }
+    return render(request, 'index.html', context)
+
+# ---------------------------
 # Memorial CRUD Views
 # ---------------------------
 
