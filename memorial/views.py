@@ -116,6 +116,33 @@ class MemorialEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return context
 
 
+@login_required
+def delete_memorial(request, pk):
+    """View for deleting a memorial and its associated data"""
+    memorial = get_object_or_404(Memorial, pk=pk, user=request.user)
+
+    if request.method == "POST":
+        if memorial.stripe_subscription_id:
+            try:
+                stripe.Subscription.delete(memorial.stripe_subscription_id)
+            except stripe.error.StripeError:
+                messages.error(
+                    request,
+                    "Error canceling subscription. Please try again."
+                )
+                return redirect('memorials:memorial_detail', pk=pk)
+            except Exception:
+                messages.warning(
+                    request,
+                    "Memorial deleted but subscription cancel failed."
+                )
+
+        memorial.delete()
+        messages.success(request, "Memorial has been deleted.")
+        return redirect('memorials:account_profile')
+
+    return redirect('memorials:memorial_detail', pk=pk)
+
 # ---------------------------
 # Memorial Content Views
 # ---------------------------
