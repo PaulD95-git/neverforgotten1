@@ -91,6 +91,59 @@
     </div>
   </div>
 
+  {# ------------------------ Name and Dates Section ------------------------ #}
+  <div class="container text-center mt-0" style="bottom: 100px;">
+    <h1 class="fw-bold">
+      {{ memorial.first_name }} 
+      {% if memorial.middle_name %}{{ memorial.middle_name }} {% endif %}
+      {{ memorial.last_name }}
+    </h1>
+    <br>
+    <p class="dates">
+      {{ memorial.date_of_birth|date:"F j, Y" }} - {{ memorial.date_of_death|date:"F j, Y" }}
+    </p>
+  </div>
+
+  {# ------------------------ Share Button ------------------------ #}
+  <div class="d-flex justify-content-center my-4">
+    <button id="shareButton" 
+            class="btn btn-outline-primary share-button">
+      <i class="fas fa-share-alt me-2"></i> Share Memorial Page
+    </button>
+  </div>
+
+  {# ------------------------ Edit Button (for owner) ------------------------ #}
+  {% if request.user == memorial.user %}
+    <div class="d-flex justify-content-center mb-4">
+      <a href="{% url 'memorials:memorial_edit' pk=memorial.pk %}" 
+         class="view-btn btn btn-primary">
+        <i class="fas fa-edit"></i> Edit Memorial
+      </a>
+    </div>
+  {% endif %}
+
+  {# ------------------------ Quote Section ------------------------ #}
+  <div class="quote-container container text-center my-5">
+    <blockquote class="memorial-quote">
+      <div class="quote-content-wrapper">
+        <i class="fas fa-quote-left quote-icon"></i>
+        <p class="quote-text">
+          {% if memorial.quote %}
+            {{ memorial.quote }}
+          {% else %}
+            In Loving Memory of {{ memorial.first_name }}
+          {% endif %}
+        </p>
+        <i class="fas fa-quote-right quote-icon"></i>
+      </div>
+      {% if memorial.quote_author %}
+        <footer class="blockquote-footer mt-3">
+          <cite>{{ memorial.quote_author }}</cite>
+        </footer>
+      {% endif %}
+    </blockquote>
+  </div>
+
 
 {% endblock %}
 
