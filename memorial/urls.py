@@ -12,8 +12,9 @@ from .views import (
 app_name = 'memorials'
 
 urlpatterns = [
-
-
+    # Basic Pages
+    path('', index, name='index'),
+    path('plans/', plans, name='plans'),
 
     # Memorial CRUD Operations
     path(
@@ -58,7 +59,6 @@ urlpatterns = [
         views.edit_profile,
         name='edit_profile',
     ),
-
 
     # Memorial Media Updates
     path(
@@ -155,6 +155,12 @@ urlpatterns = [
         name='get_stories',
     ),
 
+    # Upgrade Memorial
+    path(
+        'memorials/<int:pk>/upgrade/',
+        UpgradeMemorialView.as_view(),
+        name='upgrade_memorial',
+    ),
 
 
 ]
