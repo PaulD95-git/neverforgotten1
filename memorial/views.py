@@ -3,21 +3,40 @@ Views for NeverForgotten application.
 Handles memorial creation, management, and all related functionality.
 """
 
-# Django Core
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, reverse
-from django.views.generic import CreateView
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.csrf import csrf_protect
-from django.http import JsonResponse
+# Standard Library
+from datetime import datetime
+import json
 
+# Django Core
+from django import forms
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST, require_http_methods
+from django.views.generic import (
+    ListView, CreateView, UpdateView, FormView
+)
+
+# Third Party
+import cloudinary
+import cloudinary.uploader
+import stripe
+from cloudinary.uploader import upload, destroy
 
 # Local Apps
-from .forms import MemorialForm
-from .models import Memorial
+from plans.models import Plan
+from .forms import MemorialForm, GalleryImageForm
+from .models import Memorial, Story, GalleryImage, Tribute
 
 # ---------------------------
 # Basic Views
@@ -938,3 +957,44 @@ def edit_profile(request):
         'account/edit_profile.html',
         {'form': form}
     )
+
+
+# ---------------------------
+# Upgrade Views
+# ---------------------------
+
+class UpgradeMemorialForm(forms.Form):
+    """Form for selecting a memorial upgrade plan."""
+    plan = forms.ModelChoiceField(
+        queryset=Plan.objects.exclude(name__iexact='free'),
+        empty_label=None,
+        widget=forms.RadioSelect
+    )
+
+
+class UpgradeMemorialView(LoginRequiredMixin, FormView):
+    """View for upgrading memorial plans."""
+    template_name = 'memorials/upgrade_memorial.html'
+    form_class = UpgradeMemorialForm
+
+    def dispatch(self, request, *args, **kwargs):
+        """Get memorial and check permissions."""
+        self.memorial = get_object_or_404(
+            Memorial,
+            pk=kwargs['pk'],
+            user=request.user
+        )
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        """Handle form submission for plan upgrade."""
+        selected_plan = form.cleaned_data['plan']
+        self.memorial.plan = selected_plan
+        self.memorial.save()
+        return redirect(reverse_lazy('memorials:my_account'))
+
+    def get_context_data(self, **kwargs):
+        """Add memorial to template context."""
+        context = super().get_context_data(**kwargs)
+        context['memorial'] = self.memorial
+        return context

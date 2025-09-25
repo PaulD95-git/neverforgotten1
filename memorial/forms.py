@@ -1,5 +1,5 @@
 from django import forms
-from .models import Memorial, Tribute
+from .models import Memorial, Tribute, GalleryImage, Story
 
 
 # --- Memorial Form ---
@@ -54,6 +54,7 @@ class GalleryImageForm(forms.ModelForm):
     class Meta:
         model = GalleryImage
         fields = ['image', 'caption']
+
 
 # --- Story Form ---
 class StoryForm(forms.ModelForm):
