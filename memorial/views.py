@@ -51,6 +51,12 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+
+def plans(request):
+    """Display available memorial plans"""
+    plans = Plan.objects.all()
+    return render(request, 'plans.html', {'plans': plans})
+
 # ---------------------------
 # Memorial CRUD Views
 # ---------------------------
