@@ -109,3 +109,43 @@ def send_newsletter(newsletter, request):
     newsletter.save()
 
     return sent_count
+
+
+def send_confirmation_email(subscriber, request):
+    """
+    Send subscription confirmation email to new subscribers.
+
+    Args:
+        subscriber: Subscriber object to confirm
+        request: HttpRequest object for building absolute URLs
+
+    Returns:
+        None
+    """
+    unsubscribe_url = request.build_absolute_uri(
+        reverse('newsletter:unsubscribe', args=[subscriber.email])
+    )
+
+    context = {
+        'subscriber': subscriber,
+        'unsubscribe_url': unsubscribe_url,
+    }
+
+    subject = "Thanks for subscribing to our newsletter"
+    text_content = render_to_string(
+        'newsletter/emails/subscription_confirmation.txt',
+        context
+    )
+    html_content = render_to_string(
+        'newsletter/emails/subscription_confirmation.html',
+        context
+    )
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[subscriber.email]
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
