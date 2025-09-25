@@ -412,6 +412,20 @@
     </div>
   </div>
 
+  {# ======================== MUSIC SECTION ======================== #}
+  <div class="music-section container text-center mt-4">
+    <h2 class="music-title">Memorial Music</h2>
+
+    {% if memorial.audio_file %}
+      <audio controls class="mt-3">
+        <source src="{{ memorial.audio_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    {% else %}
+      <p class="text-muted mt-3">No music has been added to this memorial.</p>
+    {% endif %}
+  </div>
+
 
 {% endblock %}
 
