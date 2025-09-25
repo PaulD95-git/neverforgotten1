@@ -31,3 +31,43 @@ def choose_plan(request, memorial_id):
         'memorial_id': memorial_id,
     }
     return render(request, 'plans/choose_plan.html', context)
+
+
+@login_required
+def create_checkout_session(request, plan_id, memorial_id):
+    """Create Stripe checkout session for selected plan."""
+    plan = get_object_or_404(Plan, id=plan_id)
+    memorial = get_object_or_404(
+        Memorial, id=memorial_id, user=request.user
+    )
+
+    if plan.price == 0:
+        memorial.plan = plan
+        memorial.save()
+        return redirect(reverse(
+            'memorials:memorial_edit',
+            kwargs={'pk': memorial_id}
+        ))
+
+    mode = 'payment' if plan.billing_cycle == 'lifetime' else 'subscription'
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price': plan.stripe_price_id,
+                'quantity': 1,
+            }],
+            mode=mode,
+            success_url=settings.DOMAIN + reverse('plans:payment_success'),
+            cancel_url=settings.DOMAIN + reverse('plans:payment_cancel'),
+            customer_email=request.user.email,
+            metadata={
+                'user_id': request.user.id,
+                'plan_id': plan.id,
+                'memorial_id': memorial.id,
+            }
+        )
+        return redirect(checkout_session.url)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
