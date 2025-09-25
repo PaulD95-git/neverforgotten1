@@ -174,6 +174,22 @@ else:
     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+
+# ========================
+# Payment Configuration
+# ========================
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET')
+if DEBUG:
+    STRIPE_WEBHOOK_URL = 'http://127.0.0.1:8000/plans/webhook/'
+else:
+    STRIPE_WEBHOOK_URL = ''
+DOMAIN = config(
+    'DOMAIN',
+    default=''
+)
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
