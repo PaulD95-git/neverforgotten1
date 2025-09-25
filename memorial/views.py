@@ -57,6 +57,11 @@ def plans(request):
     plans = Plan.objects.all()
     return render(request, 'plans.html', {'plans': plans})
 
+
+def about(request):
+    """Simple about page view"""
+    return render(request, 'about.html')
+
 # ---------------------------
 # Memorial CRUD Views
 # ---------------------------
