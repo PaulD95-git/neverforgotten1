@@ -35,9 +35,8 @@ from cloudinary.uploader import upload, destroy
 
 # Local Apps
 from plans.models import Plan
-from .forms import MemorialForm, GalleryImageForm
+from .forms import MemorialForm, ContactForm, GalleryImageForm
 from .models import Memorial, Story, GalleryImage, Tribute
-
 # ---------------------------
 # Basic Views
 # ---------------------------
@@ -1096,6 +1095,40 @@ def browse_memorials(request):
     }
 
     return render(request, 'browse.html', context)
+
+
+# ---------------------------
+# Contact View
+# ---------------------------
+
+def contact(request):
+    """View for handling contact form submissions."""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save()
+
+            try:
+                send_mail(
+                    f"New Contact Message: {contact_message.subject}",
+                    (
+                        f"From: {contact_message.name} "
+                        f"<{contact_message.email}>\n\n"
+                        f"Message:\n{contact_message.message}"
+                    ),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.CONTACT_EMAIL],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print(f"Email sending failed: {e}")
+
+            messages.success(request, 'Your message has been sent!')
+            return redirect('memorials:contact')
+    else:
+        form = ContactForm()
+
+    return render(request, 'contact.html', {'form': form})
 
 
 def custom_page_not_found(request, exception):
