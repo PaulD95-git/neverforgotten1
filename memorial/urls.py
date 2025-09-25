@@ -38,11 +38,25 @@ urlpatterns = [
     ),
 
     # User Account
-
+    path(
+        'account/',
+        MyAccountView.as_view(),
+        name='account_profile',
+    ),
+    path(
+        'memorials/plans/',
+        views.plans,
+        name='memorial_plans',
+    ),
     path(
         'accounts/logout/',
         LogoutView.as_view(next_page='home'),
         name='logout',
+    ),
+    path(
+        'account/edit/',
+        views.edit_profile,
+        name='edit_profile',
     ),
 
 

@@ -891,3 +891,50 @@ def get_stories(request, pk):
         } for s in stories],
         'is_owner': request.user == memorial.user
     })
+
+
+# ---------------------------
+# Account Management Views
+# ---------------------------
+
+class MyAccountView(LoginRequiredMixin, ListView):
+    """View showing user's memorials"""
+    model = Memorial
+    template_name = 'account/my_account.html'
+    context_object_name = 'memorials'
+
+    def get_queryset(self):
+        """Filter memorials to only those owned by current user"""
+        return Memorial.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add free plan info to context"""
+        context = super().get_context_data(**kwargs)
+        free_plan = Plan.objects.filter(name__iexact='free').first()
+        context['plans_free_plan'] = free_plan
+        return context
+
+
+class UserEditForm(forms.ModelForm):
+    """Form for editing user profile information"""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+
+@login_required
+def edit_profile(request):
+    """View for editing user profile"""
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('my_account')
+    else:
+        form = UserEditForm(instance=request.user)
+
+    return render(
+        request,
+        'account/edit_profile.html',
+        {'form': form}
+    )
