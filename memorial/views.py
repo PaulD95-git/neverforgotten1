@@ -61,6 +61,14 @@ def about(request):
     """Simple about page view"""
     return render(request, 'about.html')
 
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+
+def terms_and_conditions(request):
+    return render(request, 'terms_and_conditions.html')
+
 # ---------------------------
 # Memorial CRUD Views
 # ---------------------------
