@@ -49,3 +49,63 @@ def send_welcome_email(subscriber, request):
         html_message=html_content,
         fail_silently=False
     )
+
+
+def send_newsletter(newsletter, request):
+    """
+    Send a newsletter to all active subscribers.
+
+    Args:
+        newsletter: Newsletter object to send
+        request: HttpRequest object for building absolute URLs
+
+    Returns:
+        int: Number of successfully sent emails
+    """
+    subscribers = Subscriber.objects.filter(subscribed=True)
+    sent_count = 0
+
+    for subscriber in subscribers:
+        try:
+            unsubscribe_url = request.build_absolute_uri(
+                reverse('newsletter:unsubscribe', args=[subscriber.email])
+            )
+
+            context = {
+                'newsletter': newsletter,
+                'subscriber': subscriber,
+                'unsubscribe_url': unsubscribe_url,
+            }
+
+            # Render both text and HTML versions
+            text_content = render_to_string(
+                'newsletter/emails/newsletter_template.txt',
+                context
+            )
+            html_content = render_to_string(
+                'newsletter/emails/newsletter_template.html',
+                context
+            )
+
+            # Create and send email
+            msg = EmailMultiAlternatives(
+                subject=newsletter.subject,
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[subscriber.email]
+            )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            sent_count += 1
+
+        except Exception as e:
+            # Consider using Django's logging instead of print
+            print(f"Failed to send to {subscriber.email}: {str(e)}")
+            continue
+
+    # Update newsletter status
+    newsletter.is_sent = True
+    newsletter.sent_at = timezone.now()
+    newsletter.save()
+
+    return sent_count
