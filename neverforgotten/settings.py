@@ -185,10 +185,10 @@ STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET')
 if DEBUG:
     STRIPE_WEBHOOK_URL = 'http://127.0.0.1:8000/plans/webhook/'
 else:
-    STRIPE_WEBHOOK_URL = ''
+    STRIPE_WEBHOOK_URL = 'https://neverforgotten-461f6f1b50c5.herokuapp.com/plans/webhook/'
 DOMAIN = config(
     'DOMAIN',
-    default=''
+    default='https://neverforgotten-461f6f1b50c5.herokuapp.com'
 )
 
 LANGUAGE_CODE = 'en-us'
