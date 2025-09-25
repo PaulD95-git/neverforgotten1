@@ -998,3 +998,15 @@ class UpgradeMemorialView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context['memorial'] = self.memorial
         return context
+
+
+def custom_page_not_found(request, exception):
+    requested_path = request.path
+    context = {
+        'requested_path': requested_path,
+        'suggested_path': reverse('home'),
+        'error_details': (
+            str(exception) if str(exception) else "Resource not found"
+        )
+    }
+    return render(request, '404.html', context, status=404)
