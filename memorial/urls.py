@@ -15,6 +15,9 @@ urlpatterns = [
     # Basic Pages
     path('', index, name='index'),
     path('plans/', plans, name='plans'),
+    path('contact/', views.contact, name='contact'),
+    path('about/', views.about, name='about'),
+    path('browse/', views.browse_memorials, name='browse'),
 
     # Memorial CRUD Operations
     path(
