@@ -1004,3 +1004,360 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ======================== */
+/* === RESPONSIVE MEDIA === */
+/* ======================== */
+
+/* Quote Section */
+@media (max-width: 768px) {
+  .quote-content-wrapper {
+    width: 85%;
+    padding: 30px 0;
+  }
+  
+  .quote-text {
+    font-size: 1.8rem;
+  }
+  
+  .quote-icon {
+    font-size: 3rem;
+  left: -15px;
+  right: -15px;
+  bottom: -5px;
+  }
+  
+  .quote-container {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-content-wrapper {
+    width: 90%;
+    padding: 25px 0;
+  }
+  
+  .quote-text {
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+  
+  .quote-icon {
+    font-size: 2.5rem;
+  }
+  
+  .quote-container {
+    padding: 20px;
+  }
+  
+  .blockquote-footer {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .quote-text {
+    font-size: 1.2rem;
+  }
+  
+  .quote-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Biography Section */
+@media (max-width: 768px) {
+  .biography-container {
+    padding: 25px;
+    width: 95vw;
+  }
+  
+  .biography-title {
+    font-size: 1.8rem;
+  }
+  
+  .biography-text {
+    font-size: 1rem;
+  }
+}
+
+/* Tributes/Stories Sections */
+@media (max-width: 768px) {
+  .tributes-section,
+  .stories-section {
+    padding: 20px;
+  }
+  
+  .tribute-card,
+  .story-card {
+    margin-bottom: 15px;
+  }
+  
+  .edit-tribute,
+  .delete-tribute,
+  .edit-story,
+  .delete-story {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    min-width: 70px;
+    margin: 4px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .tributes-section,
+  .stories-section {
+    padding: 15px;
+  }
+  
+  .tributes-section h2,
+  .stories-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .tribute-card .card-body,
+  .story-card .card-body {
+    padding: 15px;
+  }
+  
+  .tribute-actions,
+  .story-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .edit-tribute,
+  .delete-tribute,
+  .edit-story,
+  .delete-story {
+    width: 100%;
+  }
+}
+
+/* Music Section */
+@media (min-width: 768px) {
+  .music-section {
+    padding: 40px 50px;
+  }
+  
+  .music-section .music-title {
+    font-size: 2.5rem;
+  }
+  
+  .music-section p.text-muted {
+    font-size: 1.2rem;
+  }
+  
+  .music-section .btn-outline-secondary {
+    font-size: 1.1rem;
+    padding: 0.75rem 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .music-section {
+    padding: 50px 60px;
+  }
+  
+  .music-section .music-title {
+    font-size: 3rem;
+  }
+  
+  .music-section p.text-muted {
+    font-size: 1.3rem;
+  }
+  
+  .music-section .btn-outline-secondary {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+  }
+}
+
+/* Gallery Section */
+@media (max-width: 767.98px) {
+  .gallery-section {
+    padding: 20px 15px;
+    width: 95vw;
+  }
+  
+  .gallery-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .gallery-title {
+    font-size: 1.5rem;
+  }
+  
+  .gallery-btn-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn {
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .btn {
+    padding: 0.4rem 1.2rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 346px) {
+  .btn {
+    padding: 0.4rem 1.2rem !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* QR Code Section */
+@media (max-width: 768px) {
+  .qr-code-section {
+    padding: 25px 30px;
+  }
+  
+  .qr-code-section h3 {
+    font-size: 1.5rem;
+  }
+  
+  .qr-code-image {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-code-section {
+    padding: 20px;
+  }
+  
+  .qr-code-section h3 {
+    font-size: 1.3rem;
+  }
+  
+  .qr-code-container {
+    padding: 10px;
+  }
+  
+  .qr-code-image {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .qr-code-download {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Carousel Modal */
+#galleryModal .modal-content {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+#galleryModal .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#galleryModal .btn-close {
+  filter: invert(1);
+}
+
+#galleryCarousel .carousel-inner {
+  height: 70vh;
+  max-height: 700px;
+}
+
+#galleryCarousel .carousel-item {
+  height: 100%;
+}
+
+#galleryCarousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #000;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
+  bottom: 20px;
+  width: auto;
+  max-width: 80%;
+}
+
+#galleryCarousel .carousel-control-prev,
+#galleryCarousel .carousel-control-next {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+#galleryCarousel .carousel-control-prev {
+  left: 20px;
+}
+
+#galleryCarousel .carousel-control-next {
+  right: 20px;
+}
+
+#galleryCarousel .carousel-control-prev:hover,
+#galleryCarousel .carousel-control-next:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.1);
+}
+
+#galleryCarousel .carousel-control-prev-icon,
+#galleryCarousel .carousel-control-next-icon {
+  width: 24px;
+  height: 24px;
+  background-size: 24px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+#uploadGalleryModal .modal-content {
+  border: none;
+  overflow: hidden;
+}
+
+#uploadGalleryModal .modal-header {
+  background: linear-gradient(135deg, #d97b37, #f5a623);
+  color: white;
+}
+
+#uploadGalleryModal .form-control {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+#uploadGalleryModal .form-control:focus {
+  border-color: #d97b37;
+  box-shadow: 0 0 0 0.25rem rgba(217, 123, 55, 0.25);
+}
