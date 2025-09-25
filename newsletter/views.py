@@ -69,6 +69,7 @@ def subscribe(request):
             print(f"Subscription Error: {e}")
         return redirect('memorials:index')
 
+
 @require_http_methods(["GET", "POST"])
 def unsubscribe(request, email):
     """
