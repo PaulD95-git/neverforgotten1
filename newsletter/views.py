@@ -68,3 +68,34 @@ def subscribe(request):
         if settings.DEBUG:
             print(f"Subscription Error: {e}")
         return redirect('memorials:index')
+
+@require_http_methods(["GET", "POST"])
+def unsubscribe(request, email):
+    """
+    Handle newsletter unsubscription requests.
+
+    GET: Shows confirmation page
+    POST: Processes unsubscription
+    """
+    try:
+        subscriber = Subscriber.objects.get(email=email)
+
+        if request.method == 'POST':
+            subscriber.subscribed = False
+            subscriber.save()
+            messages.success(
+                request,
+                'You have been unsubscribed from our newsletter.'
+            )
+            return redirect('memorials:index')
+
+        # Show confirmation page for GET requests
+        return render(
+            request,
+            'newsletter/unsubscribe_confirm.html',
+            {'email': email}
+        )
+
+    except Subscriber.DoesNotExist:
+        messages.error(request, 'This email is not subscribed.')
+        return redirect('memorials:index')
