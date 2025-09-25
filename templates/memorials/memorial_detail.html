@@ -144,6 +144,22 @@
     </blockquote>
   </div>
 
+  {# ------------------------ Biography Section ------------------------ #}
+  <div class="biography-container container text-left mt-4">
+    <h2 class="biography-title">Remembering {{ memorial.first_name }}</h2>
+    <div class="biography-divider"></div>
+    <div class="mt-3 biography-text">
+      {% if memorial.biography %}
+        {{ memorial.biography|linebreaksbr }}
+      {% else %}
+        <p class="biography-placeholder">
+          <i class="far fa-heart"></i>
+          {{ memorial.first_name }}'s life story has not been shared yet.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
 
 {% endblock %}
 
