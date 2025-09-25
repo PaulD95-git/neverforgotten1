@@ -981,6 +981,28 @@
   </div>
 </div>
 
+<div class="qr-code-section">
+    <h3>Share This Memorial</h3>
+    <p class="qr-instructions">Scan this QR code to visit this memorial from another device</p>
+    
+    {% if memorial.qr_code_public_id %}
+        <div class="qr-code-container">
+            <img src="{{ memorial.get_qr_code_url }}" 
+                 alt="QR Code for {{ memorial.first_name }} {{ memorial.last_name }}"
+                 class="qr-code-image"
+                 id="qrCodeImage"
+                 onerror="this.style.display='none'; console.error('Failed to load QR code')">
+        </div>
+        <br>
+        <button class="qr-download-btn" id="downloadQrBtn" 
+                data-qr-url="{{ memorial.get_qr_code_url }}">
+            <i class="fas fa-download"></i> Download QR Code
+        </button>
+    {% else %}
+        <p class="text-muted">QR code not available</p>
+    {% endif %}
+</div>
+
 
 {% endblock %}
 
