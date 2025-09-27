@@ -17,9 +17,9 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
     'neverforgotten-461f6f1b50c5.herokuapp.com',
+    '127.0.0.1',
+    'localhost'
 ]
 
 # Security Headers (only when not in debug)
