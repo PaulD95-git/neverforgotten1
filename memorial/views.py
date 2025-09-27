@@ -37,6 +37,7 @@ from cloudinary.uploader import upload, destroy
 from plans.models import Plan
 from .forms import MemorialForm, ContactForm, GalleryImageForm
 from .models import Memorial, Story, GalleryImage, Tribute
+from newsletter.forms import SubscribeForm
 # ---------------------------
 # Basic Views
 # ---------------------------
@@ -47,6 +48,7 @@ def index(request):
     recent_memorials = Memorial.objects.all().order_by('-created_at')[:6]
     context = {
         'recent_memorials': recent_memorials,
+        'form': SubscribeForm(),
     }
     return render(request, 'index.html', context)
 
