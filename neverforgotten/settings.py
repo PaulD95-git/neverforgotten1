@@ -182,6 +182,9 @@ else:
     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 # ========================
 # Payment Configuration
 # ========================
