@@ -16,14 +16,12 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
-if not ALLOWED_HOSTS[0]:
-    ALLOWED_HOSTS = [
-        'neverforgotten-696913151c1f.herokuapp.com',
-        '.herokuapp.com',
-        'localhost',
-        '127.0.0.1',
-    ]
+ALLOWED_HOSTS = [
+    'neverforgotten-696913151c1f.herokuapp.com',
+    '.herokuapp.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 # Security Headers (only when not in debug)
 if not DEBUG:
