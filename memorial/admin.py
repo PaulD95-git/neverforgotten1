@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Memorial, Tribute, GalleryImage, ContactMessage
+from .models import Memorial, Tribute, GalleryImage, ContactMessage, Story
 
 # --- Admin Registrations ---
-admin.site.register(Tribute)  # Basic registration (no custom admin needed)
+admin.site.register(Tribute)
+admin.site.register(Story)
 
 
 # --- Inline Admin Classes ---
