@@ -123,11 +123,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# Allauth settings
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_LOGOUT_ON_GET = True
+# Allauth settings - FIXED VERSION
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email to authenticate
+ACCOUNT_EMAIL_REQUIRED = True           # Email is required
+ACCOUNT_USERNAME_REQUIRED = False       # Don't require username
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # No email verification
+ACCOUNT_LOGOUT_ON_GET = True         # Logout on GET request
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Require password confirmation
 
 # Site framework
 SITE_ID = 1
@@ -138,8 +140,9 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Security
-ACCOUNT_PREVENT_ENUMERATION = True  # Prevents email enumeration attacks
-ACCOUNT_SESSION_REMEMBER = True     # "Remember me" functionality
+ACCOUNT_PREVENT_ENUMERATION = True
+ACCOUNT_SESSION_REMEMBER = True
+
 
 # ========================
 # Static & Media Files
