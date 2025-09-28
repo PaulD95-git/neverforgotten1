@@ -131,7 +131,7 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 # Site framework
 SITE_ID = 1
-SITE_URL = config("SITE_URL", default="https://neverforgotten-461f6f1b50c5.herokuapp.com")
+SITE_URL = config("SITE_URL", default="https://neverforgotten-696913151c1f.herokuapp.com")
 
 # Redirects
 LOGIN_REDIRECT_URL = '/'
