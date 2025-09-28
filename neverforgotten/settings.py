@@ -127,7 +127,7 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email to authenticate
 ACCOUNT_EMAIL_REQUIRED = True           # Email is required
 ACCOUNT_USERNAME_REQUIRED = False       # Don't require username
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # No email verification
 ACCOUNT_LOGOUT_ON_GET = True         # Logout on GET request
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Require password confirmation
 
