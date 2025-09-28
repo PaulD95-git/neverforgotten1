@@ -127,7 +127,7 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email to authenticate
 ACCOUNT_EMAIL_REQUIRED = True           # Email is required
 ACCOUNT_USERNAME_REQUIRED = False       # Don't require username
-ACCOUNT_EMAIL_VERIFICATION = 'none'  # No email verification
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_LOGOUT_ON_GET = True         # Logout on GET request
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Require password confirmation
 
@@ -190,7 +190,9 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 SITE_NAME = "NeverForgotten Memorials"
 
 # Allauth email settings
-ACCOUNT_EMAIL_SUBJECT_PREFIX = "[NeverForgotten] "
+ACCOUNT_EMAIL_SUBJECT_PREFIX = f"[{SITE_NAME}] "
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
 
 
 # ========================
