@@ -41,9 +41,6 @@ def create_checkout_session(request, plan_id, memorial_id):
         Memorial, id=memorial_id, user=request.user
     )
 
-    # Store memorial_id in session for success page
-    request.session['memorial_id'] = memorial_id
-
     if plan.price == 0:
         memorial.plan = plan
         memorial.save()
@@ -55,10 +52,10 @@ def create_checkout_session(request, plan_id, memorial_id):
     mode = 'payment' if plan.billing_cycle == 'lifetime' else 'subscription'
 
     try:
-        # Build success URL with memorial_id
+        # FIXED: Use absolute URI and include memorial_id & session_id
         success_url = (
-            f"{settings.DOMAIN}{reverse('plans:payment_success')}"
-            f"?memorial_id={memorial_id}"
+            request.build_absolute_uri(reverse('plans:payment_success')) + 
+            f"?memorial_id={memorial_id}&session_id={{CHECKOUT_SESSION_ID}}"
         )
 
         checkout_session = stripe.checkout.Session.create(
@@ -68,8 +65,8 @@ def create_checkout_session(request, plan_id, memorial_id):
                 'quantity': 1,
             }],
             mode=mode,
-            success_url=success_url,
-            cancel_url=settings.DOMAIN + reverse('plans:payment_cancel'),
+            success_url=success_url,  # Use the fixed URL
+            cancel_url=request.build_absolute_uri(reverse('plans:payment_cancel')),
             customer_email=request.user.email,
             metadata={
                 'user_id': request.user.id,
@@ -79,7 +76,6 @@ def create_checkout_session(request, plan_id, memorial_id):
         )
         return redirect(checkout_session.url)
     except Exception as e:
-        logger.error(f"Checkout session error: {e}")
         return JsonResponse({'error': str(e)}, status=500)
 
 
