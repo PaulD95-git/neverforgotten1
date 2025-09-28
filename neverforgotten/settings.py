@@ -186,6 +186,13 @@ else:
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+# Site name for emails
+SITE_NAME = "NeverForgotten Memorials"
+
+# Allauth email settings
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[NeverForgotten] "
+
+
 # ========================
 # Payment Configuration
 # ========================
