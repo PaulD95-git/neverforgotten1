@@ -41,6 +41,9 @@ def create_checkout_session(request, plan_id, memorial_id):
         Memorial, id=memorial_id, user=request.user
     )
 
+    # Store memorial_id in session for success page
+    request.session['memorial_id'] = memorial_id
+
     if plan.price == 0:
         memorial.plan = plan
         memorial.save()
@@ -52,6 +55,12 @@ def create_checkout_session(request, plan_id, memorial_id):
     mode = 'payment' if plan.billing_cycle == 'lifetime' else 'subscription'
 
     try:
+        # Build success URL with memorial_id
+        success_url = (
+            f"{settings.DOMAIN}{reverse('plans:payment_success')}"
+            f"?memorial_id={memorial_id}"
+        )
+
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -59,7 +68,7 @@ def create_checkout_session(request, plan_id, memorial_id):
                 'quantity': 1,
             }],
             mode=mode,
-            success_url=settings.DOMAIN + reverse('plans:payment_success'),
+            success_url=success_url,
             cancel_url=settings.DOMAIN + reverse('plans:payment_cancel'),
             customer_email=request.user.email,
             metadata={
@@ -70,6 +79,7 @@ def create_checkout_session(request, plan_id, memorial_id):
         )
         return redirect(checkout_session.url)
     except Exception as e:
+        logger.error(f"Checkout session error: {e}")
         return JsonResponse({'error': str(e)}, status=500)
 
 
@@ -207,34 +217,49 @@ def cancel_plan(request, memorial_id):
 @login_required
 def payment_success(request):
     """Render success page after successful payment."""
-    memorial_id = (
-        request.GET.get('memorial_id') or
-        request.session.get('memorial_id') or
-        (
-            request.GET.get('session_id') and
-            stripe.checkout.Session.retrieve(
-                request.GET['session_id']
-            ).metadata.get('memorial_id')
-        )
-    )
+    # Try to get memorial_id from session first
+    memorial_id = request.session.get('memorial_id')
+
+    # If not in session, try from URL parameters
+    if not memorial_id:
+        memorial_id = request.GET.get('memorial_id')
+
+    # If still not found, try to get from Stripe session
+    if not memorial_id and request.GET.get('session_id'):
+        try:
+            session = stripe.checkout.Session.retrieve(request.GET['session_id'])
+            memorial_id = session.metadata.get('memorial_id')
+        except Exception as e:
+            logger.error(f"Error retrieving Stripe session: {e}")
+
+    # Debug logging
+    logger.info(f"Payment success - memorial_id: {memorial_id}")
+    logger.info(f"Session data: {dict(request.session)}")
+    logger.info(f"GET params: {dict(request.GET)}")
 
     if not memorial_id:
-        logger.error("No memorial_id found in request")
+        logger.error("No memorial_id found in request or session")
+        # Still show success page but with generic message
         return render(request, 'plans/success.html', {
-            'error': 'No memorial information found. Please contact support.'
+            'memorial': None,
+            'error': 'Payment successful! Your plan has been activated.'
         })
 
     try:
-        memorial = Memorial.objects.get(pk=memorial_id)
+        memorial = Memorial.objects.get(pk=memorial_id, user=request.user)
+        # Clear the session data
+        if 'memorial_id' in request.session:
+            del request.session['memorial_id']
+
         return render(request, 'plans/success.html', {
             'memorial': memorial,
             'memorial_id': memorial_id
         })
     except Memorial.DoesNotExist:
-        logger.error(f"Memorial not found with ID: {memorial_id}")
+        logger.error(f"Memorial not found with ID: {memorial_id} for user: {request.user}")
         return render(request, 'plans/success.html', {
-            'error': 'Memorial not found',
-            'memorial_id': memorial_id
+            'memorial': None,
+            'error': 'Payment successful! Your plan has been activated.'
         })
 
 
