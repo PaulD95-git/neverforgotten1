@@ -9,20 +9,47 @@
 
 {% block content %}
 
-
 <!-- Main Login Form Container -->
 <div class="form-wrapper">
   <div class="form-container">
+    
     <!-- Form Header -->
     <div class="text-center mb-4">
       <h2 class="login-title">{% trans "Welcome Back" %}</h2>
       <p class="login-subtitle">{% trans "Sign in to honor memories" %}</p>
     </div>
     
+    <!-- Error Messages -->
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      {% else %}
+        {% trans "Invalid email or password. Please try again." %}
+      {% endif %}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <!-- Success Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    
     <!-- Login Form -->
     <form method="POST" action="{% url 'account_login' %}">
       {% csrf_token %}
-      {{ form.as.p }}
       
       <!-- Email Input Field -->
       <div class="form-group mb-4">
