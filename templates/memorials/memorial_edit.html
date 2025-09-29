@@ -2002,44 +2002,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const qrCodeUrl = this.getAttribute('data-qr-url');
             const qrCodeImage = document.getElementById('qrCodeImage');
             
-            if (!qrCodeImage || !qrCodeUrl) {
+            if (qrCodeImage && qrCodeUrl) {
+                // Create a temporary anchor element to trigger download
+                const downloadLink = document.createElement('a');
+                downloadLink.href = qrCodeUrl;
+                
+                // Create filename based on memorial name
+                const memorialName = "{{ memorial.first_name }}_{{ memorial.last_name }}".replace(/\s+/g, '_');
+                downloadLink.download = `${memorialName}_qr_code.png`;
+                
+                // Append to body, click, and remove
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            } else {
                 console.error('QR code image or URL not found');
                 alert('Unable to download QR code. Please try again.');
-                return;
             }
-            
-            // Show loading state
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-            this.disabled = true;
-            
-            // Use a small timeout to ensure the UI updates before download starts
-            setTimeout(() => {
-                try {
-                    // Create download link
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = qrCodeUrl;
-                    
-                    // Create filename based on memorial name
-                    const memorialName = "{{ memorial.first_name }}_{{ memorial.last_name }}".replace(/\s+/g, '_');
-                    downloadLink.download = `${memorialName}_qr_code.png`;
-                    
-                    // Trigger download
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                    
-                } catch (error) {
-                    console.error('Download error:', error);
-                    alert('Failed to download QR code. Please try again.');
-                } finally {
-                    // Reset button state after a short delay to ensure download starts
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.disabled = false;
-                    }, 1000);
-                }
-            }, 100);
         });
     }
 });
