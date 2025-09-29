@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 # Plans app models
 # This module defines the Plan model which represents different subscription
 

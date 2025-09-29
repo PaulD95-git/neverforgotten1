@@ -161,6 +161,7 @@ def delete_memorial(request, pk):
 # Memorial Content Views
 # ---------------------------
 
+
 @csrf_protect
 def memorial_detail(request, pk):
     """Detailed view of a memorial with tributes and stories"""
@@ -199,6 +200,7 @@ def memorial_detail(request, pk):
 # ---------------------------
 # AJAX Update Views
 # ---------------------------
+
 
 @require_POST
 def update_name(request, pk):

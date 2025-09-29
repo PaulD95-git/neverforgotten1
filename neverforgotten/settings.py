@@ -134,7 +134,10 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Require password confirmation
 
 # Site framework
 SITE_ID = 1
-SITE_URL = config("SITE_URL", default="https://neverforgotten-696913151c1f.herokuapp.com")
+SITE_URL = config(
+    "SITE_URL",
+    default="https://neverforgotten-696913151c1f.herokuapp.com"
+)
 
 
 # Redirects
@@ -194,7 +197,6 @@ SITE_NAME = "NeverForgotten Memorials"
 # Allauth email settings
 ACCOUNT_EMAIL_SUBJECT_PREFIX = f"[{SITE_NAME}] "
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-
 
 
 # ========================

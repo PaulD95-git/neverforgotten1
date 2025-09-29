@@ -13,7 +13,6 @@ import logging
 from cloudinary.uploader import destroy
 from urllib.parse import urlparse
 import re
-from decouple import config 
 
 logger = logging.getLogger(__name__)
 
@@ -52,9 +51,8 @@ def create_checkout_session(request, plan_id, memorial_id):
     mode = 'payment' if plan.billing_cycle == 'lifetime' else 'subscription'
 
     try:
-        # FIXED: Use absolute URI and include memorial_id & session_id
         success_url = (
-            request.build_absolute_uri(reverse('plans:payment_success')) + 
+            request.build_absolute_uri(reverse('plans:payment_success')) +
             f"?memorial_id={memorial_id}&session_id={{CHECKOUT_SESSION_ID}}"
         )
 
@@ -65,8 +63,10 @@ def create_checkout_session(request, plan_id, memorial_id):
                 'quantity': 1,
             }],
             mode=mode,
-            success_url=success_url,  # Use the fixed URL
-            cancel_url=request.build_absolute_uri(reverse('plans:payment_cancel')),
+            success_url=success_url,
+            cancel_url=request.build_absolute_uri(
+                reverse('plans:payment_cancel')
+            ),
             customer_email=request.user.email,
             metadata={
                 'user_id': request.user.id,
@@ -213,29 +213,26 @@ def cancel_plan(request, memorial_id):
 @login_required
 def payment_success(request):
     """Render success page after successful payment."""
-    # Try to get memorial_id from session first
     memorial_id = request.session.get('memorial_id')
 
-    # If not in session, try from URL parameters
     if not memorial_id:
         memorial_id = request.GET.get('memorial_id')
 
-    # If still not found, try to get from Stripe session
     if not memorial_id and request.GET.get('session_id'):
         try:
-            session = stripe.checkout.Session.retrieve(request.GET['session_id'])
+            session = stripe.checkout.Session.retrieve(
+                request.GET['session_id']
+            )
             memorial_id = session.metadata.get('memorial_id')
         except Exception as e:
             logger.error(f"Error retrieving Stripe session: {e}")
 
-    # Debug logging
     logger.info(f"Payment success - memorial_id: {memorial_id}")
     logger.info(f"Session data: {dict(request.session)}")
     logger.info(f"GET params: {dict(request.GET)}")
 
     if not memorial_id:
         logger.error("No memorial_id found in request or session")
-        # Still show success page but with generic message
         return render(request, 'plans/success.html', {
             'memorial': None,
             'error': 'Payment successful! Your plan has been activated.'
@@ -243,7 +240,6 @@ def payment_success(request):
 
     try:
         memorial = Memorial.objects.get(pk=memorial_id, user=request.user)
-        # Clear the session data
         if 'memorial_id' in request.session:
             del request.session['memorial_id']
 
@@ -252,7 +248,12 @@ def payment_success(request):
             'memorial_id': memorial_id
         })
     except Memorial.DoesNotExist:
-        logger.error(f"Memorial not found with ID: {memorial_id} for user: {request.user}")
+        logger.error(
+            (
+                f"Memorial not found with ID: {memorial_id} "
+                f"for user: {request.user}"
+            )
+        )
         return render(request, 'plans/success.html', {
             'memorial': None,
             'error': 'Payment successful! Your plan has been activated.'
