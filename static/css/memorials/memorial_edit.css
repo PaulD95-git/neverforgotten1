@@ -966,6 +966,98 @@ body {
 }
 
 
+/* ====================== */
+/* === QR CODE STYLES === */
+/* ====================== */
+.qr-code-section {
+  background-color: #fffaf3;
+  border: 1px solid #d97b37;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  width: 90vw;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px 40px;
+  border-radius: 10px;
+  font-family: 'Lora', serif;
+  text-align: center;
+}
+
+.qr-code-section h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3e2f1c;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.qr-code-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: #d97b37;
+}
+
+.qr-code-container {
+  margin: 25px auto;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  display: inline-block;
+  border: 1px solid rgba(217, 123, 55, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.qr-code-image {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.qr-code-download,
+.qr-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #d97b37;
+  color: #fffaf3;
+  border-radius: 8px;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 5px rgba(217, 123, 55, 0.4);
+}
+
+.qr-code-download:hover,
+.qr-download-btn:hover {
+  background-color: #b86528;
+  box-shadow: 0 4px 12px rgba(217, 123, 55, 0.6);
+  transform: translateY(-1px);
+}
+
+.qr-code-download i,
+.qr-download-btn i {
+  font-size: 1rem;
+}
+
+.qr-instructions {
+  color: #6c584c;
+  font-size: 1.1rem;
+  margin-top: 15px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ======================== */
 /* === RESPONSIVE MEDIA === */
 /* ======================== */
