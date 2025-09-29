@@ -981,6 +981,8 @@
   </div>
 </div>
 
+
+<!-- QR code section -->
 <div class="qr-code-section">
     <h3>Share This Memorial</h3>
     <p class="qr-instructions">Scan this QR code to visit this memorial from another device</p>
@@ -1989,6 +1991,74 @@ document.addEventListener('DOMContentLoaded', () => {
         : '<i class="fas fa-chevron-up me-2"></i>View Less';
     });
   }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const downloadQrBtn = document.getElementById('downloadQrBtn');
+    
+    if (downloadQrBtn) {
+        downloadQrBtn.addEventListener('click', async function() {
+            const qrCodeUrl = this.getAttribute('data-qr-url');
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            
+            if (!qrCodeImage || !qrCodeUrl) {
+                console.error('QR code image or URL not found');
+                alert('Unable to download QR code. Please try again.');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                this.disabled = true;
+                
+                // Fetch the image
+                const response = await fetch(qrCodeUrl);
+                if (!response.ok) throw new Error('Failed to fetch QR code');
+                
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                // Create download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                
+                // Create filename based on memorial name
+                const memorialName = "{{ memorial.first_name }}_{{ memorial.last_name }}".replace(/\s+/g, '_');
+                downloadLink.download = `${memorialName}_qr_code.png`;
+                
+                // Trigger download
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // Clean up
+                URL.revokeObjectURL(blobUrl);
+                
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Failed to download QR code. Please try again.');
+                
+                // Fallback method - try the simple approach
+                try {
+                    const fallbackLink = document.createElement('a');
+                    fallbackLink.href = qrCodeUrl;
+                    fallbackLink.download = 'qr_code.png';
+                    document.body.appendChild(fallbackLink);
+                    fallbackLink.click();
+                    document.body.removeChild(fallbackLink);
+                } catch (fallbackError) {
+                    console.error('Fallback download also failed:', fallbackError);
+                }
+            } finally {
+                // Reset button state
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }
+        });
+    }
 });
 </script>
 {% endblock %}
