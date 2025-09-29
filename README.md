@@ -329,7 +329,7 @@ NeverForgotten underwent rigorous testing to ensure a robust, user-friendly expe
 - Added retry logic for failed webhook deliveries
 
 ![Webhook Debugging](docs/stripe_webhooks.JPG)
-*Screenshot: Webhook view with debug output showing successful processing*
+
 
 ### ✔️ Validation Results
 
