@@ -21,11 +21,17 @@ ALLOWED_HOSTS = [
 ]
 
 # Security Headers (only when not in debug)
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#if not DEBUG:
+#    SECURE_SSL_REDIRECT = True
+#    SESSION_COOKIE_SECURE = True
+#    CSRF_COOKIE_SECURE = True
+#    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Add these to force HTTP locally
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
 
 # ========================
 # Application Definition
@@ -133,7 +139,9 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Require password confirmation
 
 # Site framework
 SITE_ID = 1
-SITE_URL = config("SITE_URL", default="https://neverforgotten-696913151c1f.herokuapp.com")
+#SITE_URL = config("SITE_URL", default="https://neverforgotten-696913151c1f.herokuapp.com")
+
+SITE_URL = 'http://127.0.0.1:8000'
 
 # Redirects
 LOGIN_REDIRECT_URL = '/'

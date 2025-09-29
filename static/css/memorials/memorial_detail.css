@@ -143,6 +143,7 @@ body {
 /* ====================== */
 /* === PROFILE IMAGES === */
 /* ====================== */
+
 .profile-pic-wrapper {
   left: 50%;
   transform: translateX(-50%);
@@ -158,8 +159,8 @@ body {
 
 .profile-pic-wrapper-detail {
   position: absolute;
-  transform: translateX(-50%);
   left: 50%;
+  transform: translateX(-50%);
   bottom: 475px;
   width: 200px;
   height: 200px;
@@ -181,6 +182,40 @@ body {
 
 .profile-pic-wrapper:hover {
   transform: translateX(-50%) scale(1.03);
+}
+
+/* ===================== */
+/* === UPLOAD STYLES === */
+/* ===================== */
+#pfpUploadForm {
+  height: 75px;
+}
+
+.upload-wrapper {
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-wrapper:hover {
+  box-shadow: 0 0 10px rgba(217, 123, 55, 0.7);
+  transition: box-shadow 0.3s ease;
+}
+
+.upload-icon {
+  position: absolute;
+  bottom: 60px;
+  right: 60px;
+  color: #d97b37;
+  border-radius: 50%;
+  padding: 6px 8px;
+  font-size: 3rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.upload-icon:hover {
+  box-shadow: 0 0 10px rgba(217, 123, 55, 0.7);
+  transition: box-shadow 0.3s ease;
 }
 
 /* ==================== */
