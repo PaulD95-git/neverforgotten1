@@ -2061,4 +2061,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // AJAX music upload with proper loading state
+  const musicForm = document.querySelector('#musicEditModal form');
+  
+  if (musicForm) {
+    musicForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      const fileInput = this.querySelector('input[type="file"]');
+      
+      // Validate file
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert('Please select an audio file');
+        return;
+      }
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+      
+      try {
+        const formData = new FormData(this);
+        const csrfToken = this.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const response = await fetch(this.action, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        });
+        
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Close modal and refresh page or update music player
+          const modal = bootstrap.Modal.getInstance(document.getElementById('musicEditModal'));
+          if (modal) modal.hide();
+          
+          // Reload page to show new audio file
+          window.location.reload();
+        } else {
+          throw new Error(data.error || 'Upload failed');
+        }
+        
+      } catch (error) {
+        console.error('Music upload error:', error);
+        alert('Error: ' + error.message);
+        
+        // Reset button state
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+});
+</script>
 {% endblock %}
