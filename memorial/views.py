@@ -93,6 +93,7 @@ class MemorialCreateView(LoginRequiredMixin, CreateView):
             pass
 
         memorial = form.save()
+        messages.success(self.request, 'Memorial created successfully!')
         return redirect(reverse(
             'plans:choose_plan',
             kwargs={'memorial_id': memorial.pk}
@@ -111,6 +112,12 @@ class MemorialEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             'memorials:memorial_detail',
             kwargs={'pk': self.object.pk}
         )
+
+    def form_valid(self, form):
+        """Add success message after successful edit"""
+        response = super().form_valid(form)
+        messages.success(self.request, 'Memorial updated successfully!')
+        return response
 
     def test_func(self):
         """Ensure only memorial owner can edit"""
@@ -471,6 +478,8 @@ def create_tribute(request, pk):
             message=message
         )
 
+        messages.success(request, 'Tribute added successfully!')
+
         can_edit = (
             request.user == memorial.user or
             request.user == tribute.user
@@ -736,7 +745,7 @@ def upload_gallery_images(request, pk):
         response_data = {
             'success': True,
             'new_images': new_images,
-            'message': f"Uploaded {len(new_images)} images",
+            'message': f"Uploaded {len(new_images)} images successfully!",
             'remaining_slots': (
                 memorial.remaining_gallery_slots - len(new_images)
             )
@@ -749,7 +758,7 @@ def upload_gallery_images(request, pk):
 
         if is_ajax:
             return JsonResponse(response_data)
-        messages.success(request, response_data['message'])
+        messages.success(request, f"Uploaded {len(new_images)} images successfully!")
         return redirect('memorials:memorial_edit', pk=pk)
 
     except Exception as e:
@@ -834,6 +843,8 @@ def create_story(request, pk):
             title=title,
             content=content
         )
+
+        messages.success(request, 'Story added successfully!')
 
         can_edit = (
             request.user == memorial.user or
@@ -997,6 +1008,7 @@ def edit_profile(request):
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile updated successfully!')
             return redirect('memorials:account_profile')
     else:
         form = UserEditForm(instance=request.user)
@@ -1040,6 +1052,7 @@ class UpgradeMemorialView(LoginRequiredMixin, FormView):
         selected_plan = form.cleaned_data['plan']
         self.memorial.plan = selected_plan
         self.memorial.save()
+        messages.success(self.request, 'Memorial upgraded successfully!')
         return redirect(reverse_lazy('memorials:my_account'))
 
     def get_context_data(self, **kwargs):
