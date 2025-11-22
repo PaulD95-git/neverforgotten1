@@ -997,7 +997,7 @@ def edit_profile(request):
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('my_account')
+            return redirect('memorials:account_profile')
     else:
         form = UserEditForm(instance=request.user)
 
