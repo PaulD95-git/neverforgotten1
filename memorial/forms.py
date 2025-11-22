@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from .models import Memorial, Tribute, GalleryImage, Story, ContactMessage
 
 
@@ -23,6 +25,35 @@ class MemorialForm(forms.ModelForm):
                 attrs={'type': 'date', 'class': 'form-control'}
             ),
         }
+
+    def clean_date_of_birth(self):
+        """Validate that date of birth is not in the future"""
+        date_of_birth = self.cleaned_data['date_of_birth']
+        if date_of_birth and date_of_birth > timezone.now().date():
+            raise ValidationError("Date of birth cannot be in the future. Please select a past date.")
+        return date_of_birth
+
+    def clean_date_of_death(self):
+        """Validate that date of death is not in the future"""
+        date_of_death = self.cleaned_data['date_of_death']
+        if date_of_death and date_of_death > timezone.now().date():
+            raise ValidationError("Date of death cannot be in the future. Please select a past date.")
+        return date_of_death
+
+    def clean(self):
+        """Additional validation to ensure death date is after birth date"""
+        cleaned_data = super().clean()
+        date_of_birth = cleaned_data.get('date_of_birth')
+        date_of_death = cleaned_data.get('date_of_death')
+        
+        # Only validate if both dates are provided
+        if date_of_birth and date_of_death:
+            if date_of_death < date_of_birth:
+                raise ValidationError({
+                    'date_of_death': 'Date of death cannot be before date of birth.'
+                })
+        
+        return cleaned_data
 
 
 # --- Tribute Form ---
