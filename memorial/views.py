@@ -1143,13 +1143,8 @@ def contact(request):
     return render(request, 'contact.html', {'form': form})
 
 
-def custom_page_not_found(request, exception):
-    requested_path = request.path
-    context = {
-        'requested_path': requested_path,
-        'suggested_path': reverse('home'),
-        'error_details': (
-            str(exception) if str(exception) else "Resource not found"
-        )
-    }
-    return render(request, '404.html', context, status=404)
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
+def custom_500(request):
+    return render(request, '500.html', status=500)
