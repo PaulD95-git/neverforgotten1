@@ -61,24 +61,6 @@
           {% endif %}
         </div>
 
-        <!-- Username Field -->
-        <div class="form-group mb-3">
-          <label for="id_username" class="form-label">Username</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-at"></i></span>
-            <input type="text" 
-                   name="username" 
-                   id="id_username" 
-                   class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
-                   value="{{ form.username.value|default:user.username }}"
-                   placeholder="{{ user.username }}">
-          </div>
-          {% if form.username.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.username.errors|join:", " }}
-            </div>
-          {% endif %}
-        </div>
         
         <!-- Email Field -->
         <div class="form-group mb-3">
