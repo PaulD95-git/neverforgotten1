@@ -92,12 +92,13 @@ class MemorialCreateView(LoginRequiredMixin, CreateView):
         except Plan.DoesNotExist:
             pass
 
-        memorial = form.save()
+        response = super().form_valid(form)
         messages.success(self.request, 'Memorial created successfully!')
-        return redirect(reverse(
-            'plans:choose_plan',
-            kwargs={'memorial_id': memorial.pk}
-        ))
+        return response
+
+    def get_success_url(self):
+        """Redirect to choose plan page after successful creation"""
+        return reverse('plans:choose_plan', kwargs={'memorial_id': self.object.pk})
 
 
 class MemorialEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

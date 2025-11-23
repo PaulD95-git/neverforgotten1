@@ -12,6 +12,16 @@
 <div class="form-wrapper">
   <div class="form-container">
     <h2>Create Memorial</h2>
+    
+    <!-- Display general form errors -->
+    {% if form.non_field_errors %}
+      <div class="error-message">
+        {% for error in form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <form method="post">
       {% csrf_token %}
 
@@ -22,7 +32,15 @@
           name="first_name"
           id="id_first_name"
           required
+          value="{{ form.first_name.value|default:'' }}"
         />
+        {% if form.first_name.errors %}
+          <div class="field-error">
+            {% for error in form.first_name.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       <div class="form-group">
@@ -31,7 +49,15 @@
           type="text"
           name="middle_name"
           id="id_middle_name"
+          value="{{ form.middle_name.value|default:'' }}"
         />
+        {% if form.middle_name.errors %}
+          <div class="field-error">
+            {% for error in form.middle_name.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       <div class="form-group">
@@ -41,7 +67,15 @@
           name="last_name"
           id="id_last_name"
           required
+          value="{{ form.last_name.value|default:'' }}"
         />
+        {% if form.last_name.errors %}
+          <div class="field-error">
+            {% for error in form.last_name.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       <div class="form-group">
@@ -54,7 +88,15 @@
           min="1900-01-01"
           max="{{ today|default:'2025-12-31' }}"
           step="1"
+          value="{{ form.date_of_birth.value|default:'' }}"
         />
+        {% if form.date_of_birth.errors %}
+          <div class="field-error">
+            {% for error in form.date_of_birth.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       <div class="form-group">
@@ -66,10 +108,19 @@
           required
           min="1900-01-01"
           step="1"
+          value="{{ form.date_of_death.value|default:'' }}"
         />
+        {% if form.date_of_death.errors %}
+          <div class="field-error">
+            {% for error in form.date_of_death.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       <button type="submit" class="btn">Create Memorial</button>
+      
       {% if error_message %}
         <p class="error-message">{{ error_message }}</p>
       {% endif %}
