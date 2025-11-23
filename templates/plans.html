@@ -13,47 +13,38 @@
 
   <div class="plans-grid">
     {% for plan in plans %}
-    <div class="plan-card {% if plan.is_popular %}popular-plan{% endif %}">
-      {% if plan.is_popular %}
-      <div class="popular-badge">Most Popular</div>
-      {% endif %}
-      
-      <div class="plan-header">
-        <h3 class="plan-name">{{ plan.name }}</h3>
-        <div class="plan-price">
-          {% if plan.price == 0 %}
-            FREE
-          {% else %}
+      {% if plan.price > 0 %}  {# Only show paid plans #}
+      <div class="plan-card {% if plan.is_popular %}popular-plan{% endif %}">
+        {% if plan.is_popular %}
+        <div class="popular-badge">Most Popular</div>
+        {% endif %}
+        
+        <div class="plan-header">
+          <h3 class="plan-name">{{ plan.name }}</h3>
+          <div class="plan-price">
             ${{ plan.price }}
-          {% endif %}
-          <span class="billing-cycle">
-            {% if plan.billing_cycle == 'lifetime' %}
-              one-time
-            {% elif plan.billing_cycle == 'yearly' %}
-              /year
-            {% else %}
-              /month
-            {% endif %}
-          </span>
+            <span class="billing-cycle">
+              {% if plan.billing_cycle == 'lifetime' %}
+                one-time
+              {% elif plan.billing_cycle == 'yearly' %}
+                /year
+              {% else %}
+                /month
+              {% endif %}
+            </span>
+          </div>
         </div>
-      </div>
-      
-      <div class="plan-features">
-        {{ plan.description|linebreaksbr }}
-      </div>
-      
-      {% if plan.price == 0 %}
-        <a href="{% url 'memorials:memorial_create' %}" class="plan-button free-button">
-          Select Free Plan
-          <i class="fas fa-check"></i>
-        </a>
-      {% else %}
+        
+        <div class="plan-features">
+          {{ plan.description|linebreaksbr }}
+        </div>
+        
         <a href="{% url 'memorials:memorial_create' %}" class="plan-button {% if plan.is_popular %}popular-button{% endif %}">
           Choose {{ plan.name }}
           <i class="fas fa-chevron-right"></i>
         </a>
+      </div>
       {% endif %}
-    </div>
     {% endfor %}
   </div>
 {% endblock %}
@@ -61,4 +52,3 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/plans/plans.css' %}">
 {% endblock %}
-
