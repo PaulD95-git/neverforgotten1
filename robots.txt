@@ -27,6 +27,10 @@ Disallow: /plans/checkout/
 Disallow: /plans/cancel/
 Disallow: /plans/webhook/
 
+# Block Newsletter 
+Disallow: /newsletter/subscribe
+Disallow: /newsletter/unsubscribe
+
 # Allow public content
 Allow: /memorials/create/
 Allow: /memorials/plans/
