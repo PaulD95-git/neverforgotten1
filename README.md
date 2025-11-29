@@ -65,50 +65,89 @@ NeverForgotten operates on a tiered subscription model with both recurring and o
 - One-time payment for lifetime access
 - Most popular choice for permanent legacies
 
+### 💎 Competitive Advantage & Value Proposition
+
+The solution has a clear, well-defined purpose that addresses the needs of its target audience. Unlike social media pages, which are fleeting, or traditional obituaries, which are expensive and temporary, NeverForgotten offers a **specialized, permanent, and ad-free sanctuary**.
+
+* **Value:** We provide a stable platform for collaborative, multi-generational storytelling, focusing entirely on preserving the loved one's legacy.
+* **Unique Feature (QR Code):** Each memorial page generates a unique, printable QR code. This bridges the physical and digital divide, allowing families to place the QR code on a gravestone, bench, or funeral program for instant mobile access to the full digital legacy.
+* **Target Audience Segments:** The tiered model appeals to multiple segments: from individuals seeking a free, basic space during immediate grief (Free Tier) to families seeking permanent, one-time preservation (Lifetime Plan). The pricing ensures both accessibility and platform sustainability.
+
 ---
 
 ## 🎨 UX Design
 
 ### 🎭 Design Philosophy
 
-NeverForgotten was designed with empathy and sensitivity at its core, creating a comforting digital space for users during difficult times. The interface prioritizes simplicity, intuitive navigation, and emotional support.
+NeverForgotten was designed with **empathy and sensitivity** at its core, creating a comforting digital space for users during difficult times. The interface prioritizes simplicity, intuitive navigation, and emotional support.
 
-### 🖥️ User Experience Approach
+### 🎨 Color Palette
+The color scheme was chosen to evoke warmth, peace, and dignity. High contrast was ensured for **accessibility** (WCAG AA standard).
 
-**Key Design Principles:**
-- **Simplicity**: Clean, uncluttered interfaces that reduce cognitive load
-- **Comfort**: Soothing color palettes and gentle interactions
-- **Accessibility**: WCAG 2.1 compliant with high contrast and keyboard navigation
-- **Responsiveness**: Mobile-first design that works seamlessly across all devices
+| Color | Hex Code | Usage | Emotional Impact |
+| :--- | :--- | :--- | :--- |
+| **Cream** | `#FFF9E6` | Primary Backgrounds | Soft, warm, prevents eye strain compared to stark white. |
+| **Deep Brown** | `#3E2F1C` | Text, Headings, and Primary CTA buttons | Grounding, serious, and highly readable. |
+| **Soft Gold** | `#F2E5C7` | Borders and Subtle Accents | Elegance, preciousness, and clean element separation. |
+| **Dark Gold** | `#5A4A30` | Hover States and Active Navigation | Interaction feedback without jarring color shifts. |
 
-![Responsive Design](docs/responsive.JPG)
+### 🔠 Typography
+I selected a font pairing that balances readability with an editorial, memorial feel.
+* **Headings & Key Content (Serif):** **Lora** – A contemporary serif with roots in calligraphy, providing a sense of dignity and storytelling.
+* **Body Text & UI Elements (Sans-Serif):** **Montserrat** – Clean, geometric, and highly readable on digital screens, used for secondary text and button labels.
 
-### 📝 User Stories & Agile Development
+---
 
-![GitHub Issues Overview](docs/user_story.JPG)
+### 🖥️ Design Process & Visuals
 
-The development followed Agile methodology with user stories organized into key epics:
-- Memorial creation and management
-- User authentication and profiles
-- Subscription and payment processing
-- Community features and sharing
+#### ✏️ Design & Wireframes
+I prefer the tactile nature of pencil and paper for initial design concepts, allowing for quick iteration and organic creativity before moving to digital tools. This approach helped capture the emotional flow and user journey in a more intuitive way.
 
-### ✏️ Design Process
+(Note: My drawing skills peaked around kindergarten, but that's okay—these are just **mockups**, not masterpieces! 😉)
 
 **Hand-Drawn Wireframes**
 ![Hand-Drawn Wireframes](docs/mockups.jpg)
+![Hand-Drawn Wireframes](docs/homepage_mockup.jpg)
+![Hand-Drawn Wireframes](docs/homepage_mockup1.jpg)
+![Hand-Drawn Wireframes](docs/memorial_mockup.jpg)
+![Hand-Drawn Wireframes](docs/plans_mockup.jpg)
 
-I prefer the tactile nature of pencil and paper for initial design concepts, allowing for quick iteration and organic creativity before moving to digital tools. This approach helped capture the emotional flow and user journey in a more intuitive way.
 
-### 🔬 Testing & Refinement
+#### 💻 User Experience Approach
+The application follows a mobile-first philosophy, ensuring the site is fully **Responsive** and meets accessibility guidelines (WCAG 2.1 compliant).
+**Key Design Principles:**
+-   **Simplicity**: Clean, uncluttered interfaces that reduce cognitive load.
+-   **Comfort**: Soothing color palettes and gentle interactions.
+-   **Responsiveness**: Works seamlessly across all devices.
 
-User feedback and continuous testing informed design improvements:
-- Streamlined memorial creation process
-- Enhanced mobile navigation
-- Improved privacy controls
-- Added contextual guidance for emotional tasks
+**Responsive Design Example**
+![Responsive Design](docs/responsive.JPG)
 
-The result is a platform that balances emotional sensitivity with robust functionality, providing users with a supportive environment for preserving precious memories.
+---
+
+### 📝 User Stories & Agile Development
+
+The project was managed using **GitHub Projects and Issues** following an Agile methodology.
+
+**GitHub Issues Overview**
+![GitHub Issues Overview](docs/user_story.JPG)
+
+#### 🏗️ MoSCoW Prioritization
+I utilized the **MoSCoW prioritization method** to clearly define the Minimum Viable Product (MVP) and manage scope, ensuring focus on critical e-commerce and security features.
+
+| Priority | Description | Example Features |
+| :--- | :--- | :--- |
+| **M**ust Have | Essential for the application to function. | Secure Authentication, Memorial CRUD, Stripe Payment. |
+| **S**hould Have | Important but not vital for the current version. | Search Functionality, QR Code Generation, Custom Banners. |
+| **C**ould Have | Desirable, easily implementable, low cost. | Newsletter Signup, Detailed User Profile Editing. |
+| **W**on't Have | Not a priority for this version. | Live Chat Support, Video Hosting. |
+
+#### 🏃 Development Milestones (Sprints)
+Work was categorized into clear milestones, allowing for disciplined tracking of epics and deliverables:
+1.  **Sprint 1: Core Setup & Modeling** - Project scaffolding, Database schema implementation, and User Authentication.
+2.  **Sprint 2: MVP Functionality** - Memorial CRUD views, Form validation, and basic front-end template integration.
+3.  **Sprint 3: E-Commerce & Integration** - Stripe integration, Subscription models, Webhook handling, and Cloudinary setup.
+4.  **Sprint 4: Polish & Documentation** - Comprehensive Testing, SEO implementation, and final UI/UX review.
 
 ---
 
@@ -284,21 +323,35 @@ The result is a platform that balances emotional sensitivity with robust functio
 
 ### 🎯 Comprehensive Testing Strategy
 
-NeverForgotten underwent rigorous testing to ensure a robust, user-friendly experience across all features and platforms.
+NeverForgotten underwent **rigorous testing** to ensure a robust, user-friendly experience across all features and platforms, covering both positive (happy path) and negative (edge case) scenarios.
 
-### 🖱️ Manual Testing
+---
 
-#### ⚙️ Core Functionality Testing
-- **User Authentication**: Registration, login, logout, and password reset flows
-- **Memorial Creation**: Complete memorial setup process with all field types
-- **Subscription System**: Plan selection, Stripe payments, and feature access
-- **Content Management**: Adding tributes, stories, and gallery images
-- **Responsive Design**: Mobile, tablet, and desktop viewport testing
+### 🖱️ Manual Testing (Detailed Test Script)
+
+Manual testing covered all primary user journeys and data manipulation (**CRUD**) actions. This detailed test script provides evidence of execution, test steps, expected outcomes, and actual results, directly addressing the need for procedural documentation.
+
+#### ⚙️ Core Functionality and Edge Cases
+
+| Test Case | Action (Steps Taken) | Expected Result | Actual Result | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **T01: Reg. Flow** | Attempt registration with pre-existing email. | Redirect to Sign Up, display error (Email already exists). | Correct error message displayed. | ✅ Pass |
+| **T02: Auth Access** | Logged-out user attempts to access `/memorial/create`. | Redirect to Login page. | Redirect successful. | ✅ Pass |
+| **T03: Memorial Create** | Submit memorial creation form with **future Date of Birth**. | Form validation error: "Date cannot be in the future." | Validation triggered correctly. | ✅ Pass |
+| **T04: Memorial Edit** | Edit an existing memorial and update the biography. | Changes are immediately reflected on the Memorial Page. | Changes updated instantly. | ✅ Pass |
+| **T05: Memorial Delete** | Click delete button, confirm action. | Memorial removed from DB, user redirected to dashboard. | Successful removal and redirection. | ✅ Pass |
+| **T06: QR Button** | Click "Download QR Code" button. | QR code image is downloaded or generated. | Functionality associated and working. | ✅ Pass |
+| **T07: Stripe Success** | Select Yearly Plan, use Stripe test success card (4242...). | Payment succeeds, user sees successful purchase feedback. | Payment processed, correct feedback displayed. | ✅ Pass |
+| **T08: Stripe Failure** | Attempt payment with a test card known to fail (e.g., failed CVC). | Stripe shows card decline error to user. | Error displayed, purchase feedback shows failure. | ✅ Pass |
+| **T09: Admin Access** | Non-admin user attempts to access `/admin/`. | User is redirected or shown a 403 Forbidden page. | 403 Forbidden shown. | ✅ Pass |
+| **T10: Contact Link** | Click the Facebook social icon on the Contact page. | Redirects to the associated Facebook Business Page. | Correct external URL link opened. | ✅ Pass |
 
 #### 🌐 Browser Compatibility
 - **Chrome** (v115+): All features functional ✅
-- **Firefox** (v115+): All features functional ✅  
+- **Firefox** (v115+): All features functional ✅
 - **Safari** (v15+): All features functional ✅
+
+---
 
 ### 🤖 Automated Testing
 
@@ -308,12 +361,14 @@ NeverForgotten underwent rigorous testing to ensure a robust, user-friendly expe
 - QR code generation and storage tests
 - User authentication and authorization tests
 
-### 🐛 Bug Resolution
+---
+
+### 🐛 Bug Resolution & Documentation
 
 #### ⚠️ Deployment Issue: Database Migration to Heroku
 **Problem**: Initial deployment failed due to PostgreSQL migration conflicts between development and production environments.
 
-**Solution**: 
+**Solution**:
 - Implemented Django migration conflict detection
 - Used Heroku migration planning to preview steps
 - Created safe data migration files for schema changes
@@ -330,6 +385,7 @@ NeverForgotten underwent rigorous testing to ensure a robust, user-friendly expe
 
 ![Webhook Debugging](docs/stripe_webhooks.JPG)
 
+---
 
 ### ✔️ Validation Results
 
@@ -543,9 +599,15 @@ NeverForgotten implements comprehensive SEO strategies to ensure the platform is
 
 ### 🔧 Technical SEO
 
-**📌 Meta Tags & Structured Data**
+* **Robots.txt:** A `robots.txt` file is included in the root directory to effectively guide search engine crawlers (e.g., Googlebot), preventing server overload and ensuring private or admin pages are not indexed, which improves focus on public content **(Satisfies LO3.6)**.
+* **Sitemap.xml:** An XML sitemap is generated and accessible in the root directory. This provides search engines with a clear roadmap of all public URLs, including newly created memorial pages, ensuring they are crawled and indexed efficiently **(Satisfies LO3.5)**.
+* **Canonical URLs:** All public pages include a canonical URL tag to prevent duplicate content issues.
+
+### 📌 Meta Tags & Structured Data
+
+The site uses descriptive metadata for SEO that accurately reflects its purpose, targeting keywords like "online memorial" and "digital legacy."
+
 ```html
-<!-- Primary Meta Tags -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NeverForgotten - Create a Memorial Page for Loved Ones</title>
@@ -554,32 +616,28 @@ NeverForgotten implements comprehensive SEO strategies to ensure the platform is
 <meta name="author" content="NeverForgotten Team">
 <meta name="robots" content="index, follow">
 
-<!-- Canonical URL -->
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="NeverForgotten - Create a Memorial Page for Loved Ones">
 <meta property="og:description" content="Easily create and share memorial pages to remember loved ones. Add stories, photos, music, and tributes.">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NeverForgotten - Create a Memorial Page">
 <meta name="twitter:description" content="Create beautiful memorial pages to honor and remember loved ones. Share memories, photos, and tributes in one place.">
 
-<!-- Structured Data -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "NeverForgotten",
-  "url": "{{ request.build_absolute_uri|slice:':-1' }}",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "{{ request.build_absolute_uri }}search/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+  "@context": "[https://schema.org](https://schema.org)",
+  "@type": "WebSite",
+  "name": "NeverForgotten",
+  "url": "{{ request.build_absolute_uri|slice:':-1' }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ request.build_absolute_uri }}search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
 }
 </script>
 ```
