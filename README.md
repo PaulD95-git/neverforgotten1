@@ -103,7 +103,7 @@ I selected a font pairing that balances readability with an editorial, memorial 
 #### ✏️ Design & Wireframes
 I prefer the tactile nature of pencil and paper for initial design concepts, allowing for quick iteration and organic creativity before moving to digital tools. This approach helped capture the emotional flow and user journey in a more intuitive way.
 
-(Note: My drawing skills peaked around kindergarten, but that's okay—these are just **mockups**, not masterpieces! 😉)
+(Note: My drawing skills peaked around kindergarten, but that's okay these are just **mockups**, not masterpieces! 😉)
 
 **Hand-Drawn Wireframes**
 ![Hand-Drawn Wireframes](docs/mockups.jpg)
@@ -114,7 +114,7 @@ I prefer the tactile nature of pencil and paper for initial design concepts, all
 
 
 #### 💻 User Experience Approach
-The application follows a mobile-first philosophy, ensuring the site is fully **Responsive** and meets accessibility guidelines (WCAG 2.1 compliant).
+The application follows a mobile first philosophy, ensuring the site is fully **Responsive** and meets accessibility guidelines (WCAG 2.1 compliant).
 **Key Design Principles:**
 -   **Simplicity**: Clean, uncluttered interfaces that reduce cognitive load.
 -   **Comfort**: Soothing color palettes and gentle interactions.
@@ -589,7 +589,7 @@ heroku run python manage.py check --deploy
 
 ---
 
-**🌐 The application is successfully deployed and fully functional at: [Your Live Heroku URL]**
+**🌐 The application is successfully deployed and fully functional at: [Live Heroku URL](https://neverforgotten-696913151c1f.herokuapp.com/)**
 
 ---
 
